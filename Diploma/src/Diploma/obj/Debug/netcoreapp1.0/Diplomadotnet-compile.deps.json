@@ -35,7 +35,8 @@
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc2-final",
           "bootstrap": "3.3.7",
           "DotNet.Contracts": "1.10.20606.1",
-          "jQuery": "3.1.1"
+          "jQuery": "3.1.1",
+          "Diploma.Services": "1.0.0"
         },
         "compile": {
           "Diploma.dll": {}
@@ -2995,6 +2996,14 @@
           "System.Xml.XDocument": "4.0.11-rc2-24027",
           "System.Xml.XPath": "4.0.1-rc2-24027"
         }
+      },
+      "Diploma.Services/1.0.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.5.0-rc2-24027"
+        },
+        "compile": {
+          "Diploma.Services.dll": {}
+        }
       }
     },
     ".NETCoreApp,Version=v1.0/": {
@@ -3019,7 +3028,8 @@
           "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc2-final",
           "bootstrap": "3.3.7",
           "DotNet.Contracts": "1.10.20606.1",
-          "jQuery": "3.1.1"
+          "jQuery": "3.1.1",
+          "Diploma.Services": "1.0.0"
         },
         "runtime": {
           "Diploma.dll": {}
@@ -5882,6 +5892,14 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
+      },
+      "Diploma.Services/1.0.0": {
+        "dependencies": {
+          "NETStandard.Library": "1.5.0-rc2-24027"
+        },
+        "runtime": {
+          "Diploma.Services.dll": {}
+        }
       }
     }
   },
@@ -7100,6 +7118,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-IxOLcwl5A0Lm1s2FIUh5klV+Fi0tUE/5OltvIkZdV7phcWVfgBlCRlgxweaXVrCTI+9TZ8TihVutVaA+PC95lg=="
+    },
+    "Diploma.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

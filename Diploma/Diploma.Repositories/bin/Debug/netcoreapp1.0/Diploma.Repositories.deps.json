@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v1.0",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v1.0": {
+      "diploma.repositories/1.0.0": {
+        "dependencies": {
+          "Diploma.Models": "1.0.0"
+        },
+        "runtime": {
+          "Diploma.Repositories.dll": {}
+        }
+      },
+      "diploma.models/1.0.0": {
+        "runtime": {
+          "Diploma.Models.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "diploma.repositories/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "diploma.models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

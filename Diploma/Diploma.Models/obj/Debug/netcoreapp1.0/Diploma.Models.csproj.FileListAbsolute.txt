@@ -1,0 +1,7 @@
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\bin\Debug\netcoreapp1.0\Diploma.Models.deps.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\bin\Debug\netcoreapp1.0\Diploma.Models.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\bin\Debug\netcoreapp1.0\Diploma.Models.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Models.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Models.AssemblyInfo.cs
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Models.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Models.pdb

@@ -1,0 +1,14 @@
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.deps.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.runtimeconfig.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.runtimeconfig.dev.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.Services.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.Services.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\netcoreapp1.0\Diploma.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\netcoreapp1.0\UserSecretsAssemblyInfo.cs
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\netcoreapp1.0\Diploma.AssemblyInfo.cs
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\netcoreapp1.0\Diploma.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\netcoreapp1.0\Diploma.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.Models.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.Models.pdb

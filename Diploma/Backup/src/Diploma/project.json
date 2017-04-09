@@ -40,7 +40,8 @@
     },
     "bootstrap": "3.3.7",
     "DotNet.Contracts": "1.10.20606.1",
-    "jQuery": "3.1.1"
+    "jQuery": "3.1.1",
+    "Diploma.Services": "1.0.0"
   },
 
   "tools": {

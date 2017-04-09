@@ -1,0 +1,7 @@
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\bin\Debug\netstandard1.5\Diploma.Services.deps.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\bin\Debug\netstandard1.5\Diploma.Services.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\bin\Debug\netstandard1.5\Diploma.Services.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\obj\Debug\netstandard1.5\Diploma.Services.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\obj\Debug\netstandard1.5\Diploma.Services.AssemblyInfo.cs
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\obj\Debug\netstandard1.5\Diploma.Services.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma.Services\obj\Debug\netstandard1.5\Diploma.Services.pdb
