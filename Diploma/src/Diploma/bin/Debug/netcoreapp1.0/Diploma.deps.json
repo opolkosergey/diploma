@@ -23,7 +23,7 @@
     ".NETCoreApp,Version=v1.0": {
       "diploma/1.0.0": {
         "dependencies": {
-          "Diploma.Models": "1.0.0",
+          "Diploma.Core": "1.0.0",
           "Diploma.Services": "1.0.0",
           "DotNet.Contracts": "1.10.20606.1",
           "Microsoft.AspNetCore.Authentication.Cookies": "1.0.2",
@@ -1816,15 +1816,19 @@
           "lib/netstandard1.0/System.Text.Encodings.Web.dll": {}
         }
       },
-      "diploma.models/1.0.0": {
+      "diploma.core/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.2",
+          "Microsoft.AspNetCore.Mvc": "1.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "1.0.3",
           "Microsoft.NETCore.App": "1.0.4"
         },
         "runtime": {
-          "Diploma.Models.dll": {}
+          "Diploma.Core.dll": {}
         },
         "compile": {
-          "Diploma.Models.dll": {}
+          "Diploma.Core.dll": {}
         }
       },
       "diploma.services/1.0.0": {
@@ -4262,7 +4266,7 @@
       "path": "system.text.encodings.web/4.0.0",
       "hashPath": "system.text.encodings.web.4.0.0.nupkg.sha512"
     },
-    "diploma.models/1.0.0": {
+    "diploma.core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

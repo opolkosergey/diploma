@@ -4064,6 +4064,10 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
         "dependencies": {
+          "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.2",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.2",
+          "Microsoft.AspNetCore.Mvc": "1.0.3",
+          "Microsoft.EntityFrameworkCore.SqlServer": "1.0.3",
           "Microsoft.NETCore.App": "1.0.4"
         }
       },
@@ -10725,8 +10729,8 @@
     },
     "Diploma.Core/1.0.0": {
       "type": "project",
-      "path": "../../Diploma.Models/Diploma.Core.csproj",
-      "msbuildProject": "../../Diploma.Models/Diploma.Core.csproj"
+      "path": "../../Diploma.Core/Diploma.Core.csproj",
+      "msbuildProject": "../../Diploma.Core/Diploma.Core.csproj"
     },
     "Diploma.Services/1.0.0": {
       "type": "project",
@@ -10779,11 +10783,11 @@
       "frameworks": {
         "netcoreapp1.0": {
           "projectReferences": {
+            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj": {
+              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj"
+            },
             "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\src\\Diploma.Services\\Diploma.Services.csproj": {
               "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\src\\Diploma.Services\\Diploma.Services.csproj"
-            },
-            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Models\\Diploma.Core.csproj": {
-              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Models\\Diploma.Core.csproj"
             }
           }
         }

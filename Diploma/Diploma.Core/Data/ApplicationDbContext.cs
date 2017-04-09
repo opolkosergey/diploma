@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Diploma.Models;
+using Diploma.Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Diploma.Data
+namespace Diploma.Core.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

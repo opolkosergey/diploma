@@ -1,0 +1,6 @@
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\bin\Debug\netcoreapp1.0\Diploma.Core.deps.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\bin\Debug\netcoreapp1.0\Diploma.Core.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\bin\Debug\netcoreapp1.0\Diploma.Core.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Core.AssemblyInfo.cs
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Core.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Models\obj\Debug\netcoreapp1.0\Diploma.Core.pdb

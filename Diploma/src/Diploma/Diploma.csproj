@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Diploma.Models\Diploma.Models.csproj" />
+    <ProjectReference Include="..\..\Diploma.Core\Diploma.Core.csproj" />
     <ProjectReference Include="..\Diploma.Services\Diploma.Services.csproj" />
   </ItemGroup>
 
