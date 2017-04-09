@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Diploma.Core.Models;
 
@@ -16,6 +17,14 @@ namespace Diploma.Core.Models
 
         public byte[] Content { get; set; }
 
-        public virtual ApplicationUser Person { get; set; }
+        public double Size { get; set; }
+
+        public DateTime UploadedDate { get; set; }
+
+        public string Version { get; set; }
+
+        public virtual ICollection<DocumentAccess> DocumentAccesses { get; set; }
+
+        public virtual ApplicationUser Owner { get; set; }
     }
 }

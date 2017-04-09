@@ -1,5 +1,5 @@
-﻿using Diploma.Data;
-using Diploma.Models;
+﻿using Diploma.Core.Data;
+using Diploma.Core.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

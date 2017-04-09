@@ -5,3 +5,5 @@ C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Repositories\o
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Repositories\obj\Debug\netcoreapp1.0\Diploma.Repositories.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Repositories\obj\Debug\netcoreapp1.0\Diploma.Repositories.pdb
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Repositories\obj\Debug\netcoreapp1.0\Diploma.Repositories.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Repositories\bin\Debug\netcoreapp1.0\Diploma.Core.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Repositories\bin\Debug\netcoreapp1.0\Diploma.Core.pdb

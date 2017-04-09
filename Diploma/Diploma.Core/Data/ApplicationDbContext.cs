@@ -21,6 +21,8 @@ namespace Diploma.Core.Data
 
         public DbSet<Document> Documents { get; set; }
 
+        public DbSet<DocumentAccess> DocumentAccesses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

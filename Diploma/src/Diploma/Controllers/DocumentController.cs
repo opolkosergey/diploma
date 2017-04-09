@@ -1,38 +1,51 @@
-﻿using System.Linq;
-using Diploma.Data;
-using Diploma.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Diploma.Core.Data;
+using Diploma.Core.Models;
 using Diploma.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Controllers
 {
     public class DocumentController : Controller
     {
-        private DocumentService _documentService = new DocumentService();
+        private UserManager<ApplicationUser> _userManager;
+
+        private readonly DocumentService _documentService = new DocumentService();
+
+        public DocumentController(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         [HttpPost]
-        public IActionResult Upload(IFormFileCollection img)
+        public async Task<IActionResult> Upload(IFormFileCollection filesCollection)
         {
             var ctx = new ApplicationDbContext();
 
-            var file = img.First();
+            var file = filesCollection.First();
 
-            var document = new Document
-            {
-                ContentType = file.ContentType,
-                DocumentName = file.FileName,
-            };
+            var person = ctx.Users.First(x => x.Email == User.Identity.Name);
 
-            using (var reader = new System.IO.BinaryReader(file.OpenReadStream()))
-            {
-                document.Content = reader.ReadBytes((int)file.Length);
-            }
-
-            ctx.Documents.Add(document);
-            ctx.SaveChanges();
+            await _documentService.Save(file, person);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult DownloadFile(int id)
+        {
+            var ctx = new ApplicationDbContext();
+
+            var document = ctx.Documents.First(x => x.Id == 2);
+
+            var result = new FileContentResult(document.Content, document.ContentType);
+            result.FileDownloadName = "Name.docx";
+
+            return result;
         }
     }
 }

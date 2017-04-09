@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Diploma.Core.Data;
 
 namespace Diploma.Core.Data.Migrations
 {
@@ -15,7 +16,7 @@ namespace Diploma.Core.Data.Migrations
                 .HasAnnotation("ProductVersion", "1.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Diploma.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Diploma.Core.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -64,7 +65,7 @@ namespace Diploma.Core.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Diploma.Models.Document", b =>
+            modelBuilder.Entity("Diploma.Core.Models.Document", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -77,15 +78,35 @@ namespace Diploma.Core.Data.Migrations
                     b.Property<string>("DocumentName")
                         .HasMaxLength(255);
 
-                    b.Property<int>("PersonId");
+                    b.Property<string>("OwnerId");
 
-                    b.Property<string>("PersonId1");
+                    b.Property<double>("Size");
+
+                    b.Property<DateTime>("UploadedDate");
+
+                    b.Property<string>("Version");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId1");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.DocumentAccess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("DocumentId");
+
+                    b.Property<string>("User");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
+
+                    b.ToTable("DocumentAccesses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -195,11 +216,18 @@ namespace Diploma.Core.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Diploma.Models.Document", b =>
+            modelBuilder.Entity("Diploma.Core.Models.Document", b =>
                 {
-                    b.HasOne("Diploma.Models.ApplicationUser", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId1");
+                    b.HasOne("Diploma.Core.Models.ApplicationUser", "Owner")
+                        .WithMany("Documents")
+                        .HasForeignKey("OwnerId");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.DocumentAccess", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.Document", "Document")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("DocumentId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -212,7 +240,7 @@ namespace Diploma.Core.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Diploma.Models.ApplicationUser")
+                    b.HasOne("Diploma.Core.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -220,7 +248,7 @@ namespace Diploma.Core.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Diploma.Models.ApplicationUser")
+                    b.HasOne("Diploma.Core.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -233,7 +261,7 @@ namespace Diploma.Core.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Diploma.Models.ApplicationUser")
+                    b.HasOne("Diploma.Core.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

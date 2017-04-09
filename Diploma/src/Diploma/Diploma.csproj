@@ -12,6 +12,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Data\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Data\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*;Views\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
@@ -19,7 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Diploma.Core\Diploma.Core.csproj" />
-    <ProjectReference Include="..\Diploma.Services\Diploma.Services.csproj" />
+    <ProjectReference Include="..\..\Diploma.MyServices\Diploma.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

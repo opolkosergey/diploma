@@ -4071,11 +4071,21 @@
           "Microsoft.NETCore.App": "1.0.4"
         }
       },
+      "Diploma.Repositories/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v1.0",
+        "dependencies": {
+          "Diploma.Core": "1.0.0",
+          "Microsoft.NETCore.App": "1.0.4"
+        }
+      },
       "Diploma.Services/1.0.0": {
         "type": "project",
-        "framework": ".NETStandard,Version=v1.5",
+        "framework": ".NETCoreApp,Version=v1.0",
         "dependencies": {
-          "NETStandard.Library": "1.6.0"
+          "Diploma.Core": "1.0.0",
+          "Diploma.Repositories": "1.0.0",
+          "Microsoft.NETCore.App": "1.0.4"
         }
       }
     }
@@ -10732,10 +10742,15 @@
       "path": "../../Diploma.Core/Diploma.Core.csproj",
       "msbuildProject": "../../Diploma.Core/Diploma.Core.csproj"
     },
+    "Diploma.Repositories/1.0.0": {
+      "type": "project",
+      "path": "../../Diploma.Repositories/Diploma.Repositories.csproj",
+      "msbuildProject": "../../Diploma.Repositories/Diploma.Repositories.csproj"
+    },
     "Diploma.Services/1.0.0": {
       "type": "project",
-      "path": "../Diploma.Services/Diploma.Services.csproj",
-      "msbuildProject": "../Diploma.Services/Diploma.Services.csproj"
+      "path": "../../Diploma.MyServices/Diploma.Services.csproj",
+      "msbuildProject": "../../Diploma.MyServices/Diploma.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -10783,11 +10798,11 @@
       "frameworks": {
         "netcoreapp1.0": {
           "projectReferences": {
+            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.MyServices\\Diploma.Services.csproj": {
+              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.MyServices\\Diploma.Services.csproj"
+            },
             "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj": {
               "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj"
-            },
-            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\src\\Diploma.Services\\Diploma.Services.csproj": {
-              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\src\\Diploma.Services\\Diploma.Services.csproj"
             }
           }
         }

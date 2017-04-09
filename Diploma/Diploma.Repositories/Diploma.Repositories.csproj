@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp1.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Diploma.Core\Diploma.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -784,6 +784,14 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
+      },
+      "Diploma.Core/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0"
+      },
+      "Diploma.Repositories/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0"
       }
     }
   },
@@ -3465,10 +3473,22 @@
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._"
       ]
+    },
+    "Diploma.Core/1.0.0": {
+      "type": "project",
+      "path": "../../Diploma.Core/Diploma.Core.csproj",
+      "msbuildProject": "../../Diploma.Core/Diploma.Core.csproj"
+    },
+    "Diploma.Repositories/1.0.0": {
+      "type": "project",
+      "path": "../../Diploma.Repositories/Diploma.Repositories.csproj",
+      "msbuildProject": "../../Diploma.Repositories/Diploma.Repositories.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v1.5": [
+      "Diploma.Core >= 1.0.0",
+      "Diploma.Repositories >= 1.0.0",
       "NETStandard.Library >= 1.6.0"
     ]
   },
@@ -3488,7 +3508,14 @@
       ],
       "frameworks": {
         "netstandard1.5": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj": {
+              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj"
+            },
+            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Repositories\\Diploma.Repositories.csproj": {
+              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Repositories\\Diploma.Repositories.csproj"
+            }
+          }
         }
       }
     },

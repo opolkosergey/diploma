@@ -1,96 +1,125 @@
-﻿@model Diploma.Pagging.PaginatedList<Student>
+﻿@using Diploma.Core.Models
+@model Diploma.Pagging.PaginatedList<Student>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <div class="col-lg-9">
-    <h2>Index</h2>
-
-    <form asp-action="Upload" asp-controller="Document" method="POST" enctype="multipart/form-data">
-        <div class="input-group">
-            <div class="input-group-addon">
-                <i class="fa fa-file-word-o"></i>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-action="Upload" asp-controller="Document" method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <i class="fa fa-file-text"></i>
+                </div>
+                <input type="text" class="form-control" placeholder="Select new document" id="inputFileVisibleText">
+                <input type="file" style="display: none" name="filesCollection" id="inputFileHidden"/>
+                <span class="input-group-btn" style="float: left">
+                    <button class="btn btn-default" type="button" id="inputFileVisibleBtn">Browse</button>
+                    <input type="submit" value="Upload" class="btn btn-default"/>
+                </span>
             </div>
-            <input type="text" class="form-control" placeholder="Select your avatar" id="inputFileVisibleText">
-            <input type="file" style="display: none" name="img" id="inputFileHidden"/>
-            <span class="input-group-btn" style="float: left">
-                <button class="btn btn-default" type="button" id="inputFileVisibleBtn">Browse</button>
-                <input type="submit" value="Upload" class="btn btn-default" />
-            </span>
-        </div>
-    </form>
+        </form>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]"/>
+                    <input type="submit" value="Search" class="btn btn-default"/> |
+                    <a asp-action="Index">Back to Full List</a>
+                </p>
+            </div>
+        </form>
 
-    <form asp-action="Index" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]"/>
-                <input type="submit" value="Search" class="btn btn-default"/> |
-                <a asp-action="Index">Back to Full List</a>
-            </p>
-        </div>
-    </form>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th></th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Name</a>
-            </th>
-            <th>
-                First Name
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Enrollment Date</a>
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
+        <table class="table">
+            <thead>
             <tr>
-                <td>
-                    <i class="fa fa-file-word-o"></i>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstMidName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                </td>
+                <th></th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Name</a>
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Enrollment Date</a>
+                </th>
+                <th></th>
+                <th></th>
             </tr>
-        }
-        </tbody>
-    </table>
-    @{
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <i class="fa fa-file-word-o"></i>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstMidName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                    <td>
+                        <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="2">Download</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+     
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-    }
+     
 
     <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-page="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @prevDisabled btn">
-        Previous
-    </a>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-page="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @nextDisabled btn">
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
+        asp-route-page="@(Model.PageIndex - 1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-default @prevDisabled btn">
+              Previous
+              </a>
+              <a asp-action="Index"
+        asp-route-sortOrder="@ViewData["CurrentSort"]"
+        asp-route-page="@(Model.PageIndex + 1)"
+        asp-route-currentFilter="@ViewData["CurrentFilter"]"
+        class="btn btn-default @nextDisabled btn">
         Next
     </a>
+    }
+    else
+    {
+        <div class="jumbotron">
+            <h1>Welcome</h1>
+            <p class="lead">Share news and learn about new events in the world</p>
+            <p>
+                <a class="btn btn-lg btn-default" href="@Url.Action("Register","Account")" role="button">Sign up today</a>
+            </p>
+        </div>
+        <div class="row marketing">
+            <div class="col-lg-6">
+                <h4>Articles</h4>
+                <p>Place your articles for certain categories</p>
+                <h4>Photos</h4>
+                <p>Attach photo to articles</p>
+            </div>
+            <div class="col-lg-6">
+                <h4>Comment</h4>
+                <p>Discuss your articles and articles of other users</p>
+                <h4>Search</h4>
+                <p>Look for interesting article</p>
+            </div>
+        </div>
+    }
 </div>
 
 

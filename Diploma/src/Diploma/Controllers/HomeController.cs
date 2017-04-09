@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Diploma.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.Pagging;
-using Diploma.Models;
 
 namespace Diploma.Controllers
 {
