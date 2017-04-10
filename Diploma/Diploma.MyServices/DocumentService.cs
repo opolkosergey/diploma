@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
 using Diploma.Repositories;
@@ -12,9 +13,22 @@ namespace Diploma.Services
     {
         private readonly DocumentRepository _documentRepository = new DocumentRepository();
 
-        public Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
+        public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
         {
-            throw new NotImplementedException();
+            var document = await _documentRepository.Get(user, id);
+
+            var result = new FileContentResult(document.Content, document.ContentType);
+
+            result.FileDownloadName = CreateDocumentNameUsingVersion(document);
+
+            result.FileDownloadName = document.DocumentName;
+
+            return result;
+        }
+
+        public async Task<IEnumerable<Document>> GetAll()
+        {
+            return await _documentRepository.GetAll();
         }
 
         public async Task Save(IFormFile file, ApplicationUser user)
@@ -23,7 +37,16 @@ namespace Diploma.Services
             {
                 ContentType = file.ContentType,
                 DocumentName = file.FileName,
-                Owner = user
+                ApplicationUser = user,
+                UploadedDate = DateTime.Now,
+                Version = "1",
+                DocumentAccesses = new List<DocumentAccess>
+                {
+                    new DocumentAccess
+                    {
+                        User = user.Email
+                    }
+                }
             };
 
             using (var reader = new System.IO.BinaryReader(file.OpenReadStream()))
@@ -32,6 +55,11 @@ namespace Diploma.Services
             }
 
             await _documentRepository.Save(document, user);
+        }
+
+        private string CreateDocumentNameUsingVersion(Document document)
+        {
+            return null;
         }
     }
 }

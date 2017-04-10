@@ -17,10 +17,11 @@ namespace Diploma.Core.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            
         }
 
         public DbSet<Document> Documents { get; set; }
-
+        
         public DbSet<DocumentAccess> DocumentAccesses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

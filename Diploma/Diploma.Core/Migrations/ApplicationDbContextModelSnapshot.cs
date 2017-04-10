@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Diploma.Core.Data;
 
-namespace Diploma.Core.Data.Migrations
+namespace Diploma.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170409134758_RemoveDocsTable")]
-    partial class RemoveDocsTable
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.3")
@@ -64,6 +63,50 @@ namespace Diploma.Core.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.Document", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<byte[]>("Content");
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("DocumentName")
+                        .HasMaxLength(255);
+
+                    b.Property<double>("Size");
+
+                    b.Property<DateTime>("UploadedDate");
+
+                    b.Property<string>("Version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Documents");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.DocumentAccess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DocumentId");
+
+                    b.Property<string>("User");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
+
+                    b.ToTable("DocumentAccesses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -171,6 +214,21 @@ namespace Diploma.Core.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.Document", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Documents")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.DocumentAccess", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.Document", "Document")
+                        .WithMany("DocumentAccesses")
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

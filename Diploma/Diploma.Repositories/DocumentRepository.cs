@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Data;
@@ -12,6 +13,13 @@ namespace Diploma.Repositories
     {
         private readonly ApplicationDbContext ctx = new ApplicationDbContext();
 
+        public async Task<IEnumerable<Document>> GetAll()
+        {
+            return await ctx.Documents
+                .Include(i => i.DocumentAccesses)
+                .ToListAsync();
+        }
+
         public async Task Save(Document document, ApplicationUser user)
         {
             user.Documents.Add(document);
@@ -21,7 +29,9 @@ namespace Diploma.Repositories
 
         public async Task<Document> Get(ApplicationUser user, int documentId)
         {
-            var document = await ctx.Documents.FirstOrDefaultAsync(d => d.Id == documentId);
+            var document = await ctx.Documents
+                .Include(i => i.DocumentAccesses)
+                .FirstOrDefaultAsync(d => d.Id == documentId);            
 
             if (document == null)
             {

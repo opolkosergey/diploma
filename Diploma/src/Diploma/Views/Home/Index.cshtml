@@ -1,5 +1,5 @@
 ﻿@using Diploma.Core.Models
-@model Diploma.Pagging.PaginatedList<Student>
+@model Diploma.Pagging.PaginatedList<Document>
 
 @{
     ViewData["Title"] = "Index";
@@ -39,7 +39,7 @@
                     <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Name</a>
                 </th>
                 <th>
-                    First Name
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["VersionSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Version</a>
                 </th>
                 <th>
                     <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Enrollment Date</a>
@@ -56,21 +56,21 @@
                         <i class="fa fa-file-word-o"></i>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
+                        @Html.DisplayFor(modelItem => item.DocumentName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FirstMidName)
+                        @Html.DisplayFor(modelItem => item.Version)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                        @Html.DisplayFor(modelItem => item.UploadedDate)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                     <td>
-                        <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="2">Download</a>
+                        <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="@item.Id">Download</a>
                     </td>
                 </tr>
             }

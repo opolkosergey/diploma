@@ -25,6 +25,8 @@ namespace Diploma.Core.Models
 
         public virtual ICollection<DocumentAccess> DocumentAccesses { get; set; }
 
-        public virtual ApplicationUser Owner { get; set; }
+        public string ApplicationUserId { get; set; }
+
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

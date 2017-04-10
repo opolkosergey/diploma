@@ -7,6 +7,7 @@ using Diploma.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Controllers
 {
@@ -16,34 +17,32 @@ namespace Diploma.Controllers
 
         private readonly DocumentService _documentService = new DocumentService();
 
+        private readonly UserService _userService;
+
         public DocumentController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
+            _userService = new UserService(userManager);
         }
 
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFileCollection filesCollection)
-        {
-            var ctx = new ApplicationDbContext();
-
+        {         
             var file = filesCollection.First();
 
-            var person = ctx.Users.First(x => x.Email == User.Identity.Name);
+            var user = _userService.GetUserByEmail(User.Identity.Name);
 
-            await _documentService.Save(file, person);
+            await _documentService.Save(file, user);
 
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public IActionResult DownloadFile(int id)
+        public async Task<IActionResult> DownloadFile(int id)
         {
-            var ctx = new ApplicationDbContext();
+            var user = _userService.GetUserByEmail(User.Identity.Name);
 
-            var document = ctx.Documents.First(x => x.Id == 2);
-
-            var result = new FileContentResult(document.Content, document.ContentType);
-            result.FileDownloadName = "Name.docx";
+            var result = await _documentService.DownloadFile(id, user);
 
             return result;
         }

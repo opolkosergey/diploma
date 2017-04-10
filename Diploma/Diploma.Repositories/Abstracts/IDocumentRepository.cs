@@ -8,6 +8,8 @@ namespace Diploma.Repositories.Abstracts
 {
     public interface IDocumentRepository
     {
+        Task<IEnumerable<Document>> GetAll(); 
+
         Task Save(Document document, ApplicationUser user);
 
         Task<Document> Get(ApplicationUser user, int documentId);
