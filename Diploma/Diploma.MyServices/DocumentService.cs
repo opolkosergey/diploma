@@ -64,9 +64,16 @@ namespace Diploma.Services
 
             var underscoreIndex = fileName.LastIndexOf('_');
 
-            var version = fileName.Substring(underscoreIndex, pointIndex - underscoreIndex);
+            if (underscoreIndex != -1)
+            {
+                var version = fileName.Substring(underscoreIndex, pointIndex - underscoreIndex);
 
-            return fileName.Replace(version, string.Empty);
+                return fileName.Replace(version, string.Empty);
+            }
+
+            return fileName;
+
+
         }
 
         private async Task<string> SetDocumentVersion(string fileFileName)
@@ -74,7 +81,7 @@ namespace Diploma.Services
             var documents = await _documentRepository.GetAll();
 
             var existingDocuments = documents
-                .Where(x => x.DocumentName == fileFileName)
+                .Where(x => x.DocumentName == fileFileName && !string.IsNullOrEmpty(x.Version))
                 .ToList();
 
             if (existingDocuments.Any())
