@@ -20,6 +20,10 @@ namespace Diploma.Core.Data
             
         }
 
+        public DbSet<Organization> Organizations { get; set; }
+
+        public DbSet<UserFolder> UserFolders { get; set; }
+
         public DbSet<Document> Documents { get; set; }
         
         public DbSet<DocumentAccess> DocumentAccesses { get; set; }

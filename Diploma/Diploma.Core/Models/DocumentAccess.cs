@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Diploma.Core.Models
+﻿namespace Diploma.Core.Models
 {
     public class DocumentAccess
     {

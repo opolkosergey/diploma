@@ -8,8 +8,8 @@ using Diploma.Core.Data;
 namespace Diploma.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170410121126_Initial")]
-    partial class Initial
+    [Migration("20170415170853_AddIsOrgOwnerProperty")]
+    partial class AddIsOrgOwnerProperty
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,8 @@ namespace Diploma.Core.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool?>("IsOrganizationOwner");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -40,6 +42,8 @@ namespace Diploma.Core.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
+
+                    b.Property<int?>("OrganizationId");
 
                     b.Property<string>("PasswordHash");
 
@@ -63,6 +67,8 @@ namespace Diploma.Core.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
+                    b.HasIndex("OrganizationId");
+
                     b.ToTable("AspNetUsers");
                 });
 
@@ -70,8 +76,6 @@ namespace Diploma.Core.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
 
                     b.Property<byte[]>("Content");
 
@@ -85,11 +89,13 @@ namespace Diploma.Core.Migrations
 
                     b.Property<DateTime>("UploadedDate");
 
+                    b.Property<int>("UserFolderId");
+
                     b.Property<string>("Version");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserFolderId");
 
                     b.ToTable("Documents");
                 });
@@ -108,6 +114,38 @@ namespace Diploma.Core.Migrations
                     b.HasIndex("DocumentId");
 
                     b.ToTable("DocumentAccesses");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.Organization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Organizations");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.UserFolder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("UserFolders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -217,11 +255,19 @@ namespace Diploma.Core.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Diploma.Core.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.Organization", "Organization")
+                        .WithMany("Employees")
+                        .HasForeignKey("OrganizationId");
+                });
+
             modelBuilder.Entity("Diploma.Core.Models.Document", b =>
                 {
-                    b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Diploma.Core.Models.UserFolder", "UserFolder")
                         .WithMany("Documents")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserFolderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Diploma.Core.Models.DocumentAccess", b =>
@@ -230,6 +276,13 @@ namespace Diploma.Core.Migrations
                         .WithMany("DocumentAccesses")
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.UserFolder", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("UserFolders")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

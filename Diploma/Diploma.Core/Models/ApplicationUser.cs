@@ -6,6 +6,12 @@ namespace Diploma.Core.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
+        public bool? IsOrganizationOwner { get; set; }
+        
+        public int? OrganizationId { get; set; }
+        
+        public virtual Organization Organization { get; set; }
+
+        public virtual ICollection<UserFolder> UserFolders { get; set; }
     }
 }

@@ -26,13 +26,13 @@ namespace Diploma.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload(IFormFileCollection filesCollection)
+        public async Task<IActionResult> Upload(IFormFileCollection filesCollection, string folderName = "Uploaded")
         {         
             var file = filesCollection.First();
 
             var user = _userService.GetUserByEmail(User.Identity.Name);
 
-            await _documentService.Save(file, user);
+            await _documentService.Save(file, folderName, user);
 
             return RedirectToAction("Index", "Home");
         }

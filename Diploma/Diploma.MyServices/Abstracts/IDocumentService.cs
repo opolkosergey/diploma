@@ -10,7 +10,7 @@ namespace Diploma.Services.Abstracts
     {
         Task<IEnumerable<Document>> GetAll();
         
-        Task Save(IFormFile file, ApplicationUser user);
+        Task Save(IFormFile file, string filderName, ApplicationUser user);
 
         Task<FileContentResult> DownloadFile(int id, ApplicationUser user);
     }

@@ -30,24 +30,39 @@ namespace Diploma.Services
             return await _documentRepository.GetAll();
         }
 
-        public async Task Save(IFormFile file, ApplicationUser user)
+        public async Task Save(IFormFile file, string folderName, ApplicationUser user)
         {
+            var folder = user.UserFolders.FirstOrDefault(x => x.Name == folderName);
+
+            if (folder == null)
+            {
+                folder = new UserFolder
+                {
+                    Name = folderName,
+                    ApplicationUser = user,
+                    Documents = new List<Document>()
+                };
+
+                user.UserFolders.Add(folder);
+            }
+
             var documentName = ParseFileName(file.FileName);
 
             var document = new Document
             {
                 ContentType = file.ContentType,
                 DocumentName = documentName,
-                ApplicationUser = user,
+                UserFolderId = folder.Id,
                 UploadedDate = DateTime.Now,
                 Version = await SetDocumentVersion(documentName),
+                Size = file.Length,
                 DocumentAccesses = new List<DocumentAccess>
                 {
                     new DocumentAccess
                     {
                         User = user.Email
                     }
-                }
+                },
             };
 
             using (var reader = new System.IO.BinaryReader(file.OpenReadStream()))
@@ -72,8 +87,6 @@ namespace Diploma.Services
             }
 
             return fileName;
-
-
         }
 
         private async Task<string> SetDocumentVersion(string fileFileName)

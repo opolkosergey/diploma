@@ -8,9 +8,10 @@ using Diploma.Core.Data;
 namespace Diploma.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170415170726_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.3")
@@ -29,8 +30,6 @@ namespace Diploma.Core.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool?>("IsOrganizationOwner");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -256,7 +255,7 @@ namespace Diploma.Core.Migrations
 
             modelBuilder.Entity("Diploma.Core.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Diploma.Core.Models.Organization", "Organization")
+                    b.HasOne("Diploma.Core.Models.Organization")
                         .WithMany("Employees")
                         .HasForeignKey("OrganizationId");
                 });

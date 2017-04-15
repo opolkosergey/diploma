@@ -22,6 +22,7 @@ namespace Diploma.Services
         {
             var user = _userManager.Users
                 .Include(i => i.Roles)
+                .Include(i => i.UserFolders)
                 .First(x => x.Email == email);
 
             return user;

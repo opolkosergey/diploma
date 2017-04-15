@@ -21,9 +21,14 @@ namespace Diploma.Repositories
         }
 
         public async Task Save(Document document, ApplicationUser user)
-        {
-            user.Documents.Add(document);
-            ctx.Users.Attach(user);
+        {           
+            ctx.Documents.Add(document);
+
+            //user.OrganizationId = 1;
+            //user.Organization = ctx.Organizations.First();
+            //ctx.Entry(user).State = EntityState.Modified;
+            //ctx.Users.Update(user);
+
             await ctx.SaveChangesAsync();
         }
 
