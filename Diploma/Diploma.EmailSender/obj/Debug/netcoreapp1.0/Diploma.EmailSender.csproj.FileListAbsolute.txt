@@ -1,0 +1,7 @@
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\bin\Debug\netcoreapp1.0\Diploma.EmailSender.deps.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\obj\Debug\netcoreapp1.0\Diploma.EmailSender.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\obj\Debug\netcoreapp1.0\Diploma.EmailSender.AssemblyInfo.cs
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\bin\Debug\netcoreapp1.0\Diploma.EmailSender.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\bin\Debug\netcoreapp1.0\Diploma.EmailSender.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\obj\Debug\netcoreapp1.0\Diploma.EmailSender.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.EmailSender\obj\Debug\netcoreapp1.0\Diploma.EmailSender.pdb

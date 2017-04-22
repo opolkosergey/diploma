@@ -14,3 +14,5 @@ C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\obj\Debug\netcoreapp1.0\Diploma.pdb
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.Repositories.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.Repositories.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.EmailSender.dll
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\src\Diploma\bin\Debug\netcoreapp1.0\Diploma.EmailSender.pdb

@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Diploma.Core\Diploma.Core.csproj" />
+    <ProjectReference Include="..\..\Diploma.EmailSender\Diploma.EmailSender.csproj" />
     <ProjectReference Include="..\..\Diploma.MyServices\Diploma.Services.csproj" />
   </ItemGroup>
 

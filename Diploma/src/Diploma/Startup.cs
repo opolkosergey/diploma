@@ -1,5 +1,8 @@
 ﻿using Diploma.Core.Data;
 using Diploma.Core.Models;
+using Diploma.EmailSender;
+using Diploma.EmailSender.Abstracts;
+using Diploma.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -43,7 +46,12 @@ namespace Diploma
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(GlobalExceptionInterseptor));
+            });
+
+            services.AddTransient<IEmailNotificator, EmailNotificator>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
