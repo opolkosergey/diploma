@@ -8,8 +8,8 @@ using Diploma.Core.Data;
 namespace Diploma.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170415170853_AddIsOrgOwnerProperty")]
-    partial class AddIsOrgOwnerProperty
+    [Migration("20170423142037_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,6 +85,10 @@ namespace Diploma.Core.Migrations
                     b.Property<string>("DocumentName")
                         .HasMaxLength(255);
 
+                    b.Property<string>("Signature");
+
+                    b.Property<string>("SignedByUser");
+
                     b.Property<double>("Size");
 
                     b.Property<DateTime>("UploadedDate");
@@ -146,6 +150,37 @@ namespace Diploma.Core.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserFolders");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.UserKeys", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<byte[]>("D");
+
+                    b.Property<byte[]>("DP");
+
+                    b.Property<byte[]>("DQ");
+
+                    b.Property<byte[]>("Exponent");
+
+                    b.Property<byte[]>("InverseQ");
+
+                    b.Property<byte[]>("Modulus");
+
+                    b.Property<byte[]>("P");
+
+                    b.Property<byte[]>("Q");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId")
+                        .IsUnique();
+
+                    b.ToTable("UserKeys");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -283,6 +318,13 @@ namespace Diploma.Core.Migrations
                     b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("UserFolders")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.UserKeys", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
+                        .WithOne("UserKeys")
+                        .HasForeignKey("Diploma.Core.Models.UserKeys", "ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

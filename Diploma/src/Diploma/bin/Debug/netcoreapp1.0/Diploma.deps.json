@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0",
-    "signature": "59c779875d8d613adc6f66d0112c14114d3baeb8"
+    "signature": "bac309d3e1e7ce78aa17042fda8df0c20e756803"
   },
   "compilationOptions": {
     "defines": [
@@ -24,6 +24,7 @@
       "diploma/1.0.0": {
         "dependencies": {
           "Diploma.Core": "1.0.0",
+          "Diploma.DocumentSign": "1.0.0",
           "Diploma.EmailSender": "1.0.0",
           "Diploma.Services": "1.0.0",
           "DotNet.Contracts": "1.10.20606.1",
@@ -46,6 +47,7 @@
           "Microsoft.NETCore.App": "1.0.4",
           "Microsoft.VisualStudio.Web.BrowserLink": "1.0.1",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "1.0.0",
+          "System.Security.Cryptography.Csp": "4.3.0",
           "bootstrap": "3.3.7",
           "jQuery": "3.1.1"
         },
@@ -54,6 +56,17 @@
         },
         "compile": {
           "Diploma.dll": {}
+        }
+      },
+      "binbin.linq.predicatebuilder/2.0.1": {
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
+        },
+        "runtime": {
+          "lib/netstandard1.6/Binbin.Linq.PredicateBuilder.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.6/Binbin.Linq.PredicateBuilder.dll": {}
         }
       },
       "bootstrap/3.3.7": {
@@ -2807,6 +2820,9 @@
             "rid": "win",
             "assetType": "runtime"
           }
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Security.Cryptography.Csp.dll": {}
         }
       },
       "system.security.cryptography.encoding/4.3.0": {
@@ -3196,6 +3212,19 @@
           "Diploma.Core.dll": {}
         }
       },
+      "diploma.documentsign/1.0.0": {
+        "dependencies": {
+          "Diploma.Core": "1.0.0",
+          "Microsoft.NETCore.App": "1.0.4",
+          "System.Security.Cryptography.Csp": "4.3.0"
+        },
+        "runtime": {
+          "Diploma.DocumentSign.dll": {}
+        },
+        "compile": {
+          "Diploma.DocumentSign.dll": {}
+        }
+      },
       "diploma.emailsender/1.0.0": {
         "dependencies": {
           "MailKit": "1.16.0",
@@ -3223,6 +3252,7 @@
       },
       "diploma.services/1.0.0": {
         "dependencies": {
+          "Binbin.Linq.PredicateBuilder": "2.0.1",
           "Diploma.Core": "1.0.0",
           "Diploma.Repositories": "1.0.0",
           "Microsoft.NETCore.App": "1.0.4"
@@ -3858,6 +3888,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "binbin.linq.predicatebuilder/2.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ntQfhCVHYEL5DJA9gVa7Vw+61mcA0xbMDaPgTbyNwqEhvEdw2eSYJolXfy2erlYFcaUyxjla6MYWRWzopPW49Q==",
+      "path": "binbin.linq.predicatebuilder/2.0.1",
+      "hashPath": "binbin.linq.predicatebuilder.2.0.1.nupkg.sha512"
     },
     "bootstrap/3.3.7": {
       "type": "package",
@@ -5260,6 +5297,11 @@
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
     "diploma.core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "diploma.documentsign/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

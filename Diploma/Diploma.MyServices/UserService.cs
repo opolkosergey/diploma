@@ -21,8 +21,10 @@ namespace Diploma.Services
         public ApplicationUser GetUserByEmail(string email)
         {
             var user = _userManager.Users
-                .Include(i => i.Roles)
+                .Include(i => i.Roles)                
                 .Include(i => i.UserFolders)
+                .ThenInclude(x => x.Documents)
+                .Include(i => i.UserKeys)
                 .First(x => x.Email == email);
 
             return user;

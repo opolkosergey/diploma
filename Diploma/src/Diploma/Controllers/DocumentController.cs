@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Diploma.Core.Data;
 using Diploma.Core.Models;
 using Diploma.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Diploma.DocumentSign;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Diploma.Controllers
 {
@@ -16,6 +15,8 @@ namespace Diploma.Controllers
         private UserManager<ApplicationUser> _userManager;
 
         private readonly DocumentService _documentService = new DocumentService();
+
+        private readonly DocumentSignService _documentSignService = new DocumentSignService();
 
         private readonly UserService _userService;
 
@@ -38,6 +39,7 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DownloadFile(int id)
         {
             var user = _userService.GetUserByEmail(User.Identity.Name);
@@ -45,6 +47,21 @@ namespace Diploma.Controllers
             var result = await _documentService.DownloadFile(id, user);
 
             return result;
+        }
+
+        public async Task<IActionResult> SignDocument(int id)
+        {
+            var user = _userService.GetUserByEmail(User.Identity.Name);
+
+            var document = await _documentService.Get(user, id);
+
+            if (_documentSignService.SignData(document, user))
+            {
+                await _documentService.Update(document);
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

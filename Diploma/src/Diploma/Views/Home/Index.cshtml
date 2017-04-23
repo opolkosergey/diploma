@@ -6,7 +6,7 @@
 }
 
 <div class="col-lg-9">
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity.IsAuthenticated || (bool)ViewData["anonimous"])
     {
         <form asp-action="Upload" asp-controller="Document" method="POST" enctype="multipart/form-data">
             <div class="input-group">
@@ -14,18 +14,18 @@
                     <i class="fa fa-file-text"></i>
                 </div>
                 <input type="text" class="form-control" placeholder="Select new document" id="inputFileVisibleText">
-                <input type="file" style="display: none" name="filesCollection" id="inputFileHidden"/>
+                <input type="file" style="display: none" name="filesCollection" id="inputFileHidden" />
                 <span class="input-group-btn" style="float: left">
                     <button class="btn btn-default" type="button" id="inputFileVisibleBtn">Browse</button>
-                    <input type="submit" value="Upload" class="btn btn-default"/>
+                    <input type="submit" value="Upload" class="btn btn-default" />
                 </span>
             </div>
         </form>
         <form asp-action="Index" method="get">
             <div class="form-actions no-color">
                 <p>
-                    Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]"/>
-                    <input type="submit" value="Search" class="btn btn-default"/> |
+                    Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-default" /> |
                     <a asp-action="Index">Back to Full List</a>
                 </p>
             </div>
@@ -33,68 +33,79 @@
 
         <table class="table">
             <thead>
-            <tr>
-                <th></th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Name</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["VersionSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Version</a>
-                </th>
-                <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Enrollment Date</a>
-                </th>
-                <th></th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-loginAsAnonimous="@ViewData["anonimous"]">Title</a>
+                    </th>
+                    <th style="text-align: center">
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["VersionSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-loginAsAnonimous="@ViewData["anonimous"]">Version</a>
+                    </th>
+                    <th>
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]" asp-route-loginAsAnonimous="@ViewData["anonimous"]">Uploaded Date</a>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th style="text-align: center">Download</th>
+                    <th>Signature</th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <i class="fa fa-file-word-o"></i>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DocumentName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Version)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UploadedDate)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                    <td>
-                        <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="@item.Id">Download</a>
-                    </td>
-                </tr>
-            }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <i class="fa fa-file-word-o"></i>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DocumentName)
+                        </td>
+                        <td style="text-align: center">
+                            @Html.DisplayFor(modelItem => item.Version)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UploadedDate)
+                        </td>
+                        <td></td>
+                        <td>
+                            <a asp-action="SignDocument" asp-controller="Document" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                        <td style="text-align: center">
+                            <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="@item.Id"><i class="fa fa-download"></i></a>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Signature))
+                            {
+                                <span>Signed <i class="glyphicon glyphicon-ok-sign"></i></span>
+                            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
-     
+
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-     
 
-    <a asp-action="Index"
-        asp-route-sortOrder="@ViewData["CurrentSort"]"
-        asp-route-page="@(Model.PageIndex - 1)"
-        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-        class="btn btn-default @prevDisabled btn">
-              Previous
-              </a>
-              <a asp-action="Index"
-        asp-route-sortOrder="@ViewData["CurrentSort"]"
-        asp-route-page="@(Model.PageIndex + 1)"
-        asp-route-currentFilter="@ViewData["CurrentFilter"]"
-        class="btn btn-default @nextDisabled btn">
-        Next
-    </a>
+
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-loginAsAnonimous="@ViewData["anonimous"]"
+           class="btn btn-default @prevDisabled btn">
+            Previous
+        </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               asp-route-loginAsAnonimous="@ViewData["anonimous"]"
+               class="btn btn-default @nextDisabled btn">
+                Next
+            </a>
     }
     else
     {
@@ -103,7 +114,7 @@
             <p class="lead">Share news and learn about new events in the world</p>
             <p>
                 <a class="btn btn-lg btn-default" href="@Url.Action("Register","Account")" role="button">Sign up today</a>
-                <a class="btn btn-lg btn-warning" href="" role="button">Login as anonimous user</a>
+                <a class="btn btn-lg btn-warning" href="@Url.Action("Index","Home", new { loginAsAnonimous = true })" role="button">Login as anonimous user</a>
             </p>
         </div>
         <div class="row marketing">
@@ -136,73 +147,73 @@
 
 
 @*@{
-            ViewData["Title"] = "Home Page";
-        }
+        ViewData["Title"] = "Home Page";
+    }
 
-        <div class="col-lg-9">
-            @if (User.Identity.IsAuthenticated)
-            {
-                <h2 style="text-align: center">Your documents</h2>
-                <table class="table">
-                    <thead>
+    <div class="col-lg-9">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h2 style="text-align: center">Your documents</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstMidName)
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstMidName)
-                            </th>
-                            <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
-                            </th>
-                            <th></th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstMidName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LastName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.FirstMidName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="jumbotron">
-                    <h1>Welcome</h1>
-                    <p class="lead">Share news and learn about new events in the world</p>
-                    <p>
-                        <a class="btn btn-lg btn-default" href="@Url.Action("Register","Account")" role="button">Sign up today</a>
-                    </p>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="jumbotron">
+                <h1>Welcome</h1>
+                <p class="lead">Share news and learn about new events in the world</p>
+                <p>
+                    <a class="btn btn-lg btn-default" href="@Url.Action("Register","Account")" role="button">Sign up today</a>
+                </p>
+            </div>
+            <div class="row marketing">
+                <div class="col-lg-6">
+                    <h4>Articles</h4>
+                    <p>Place your articles for certain categories</p>
+                    <h4>Photos</h4>
+                    <p>Attach photo to articles</p>
                 </div>
-                <div class="row marketing">
-                    <div class="col-lg-6">
-                        <h4>Articles</h4>
-                        <p>Place your articles for certain categories</p>
-                        <h4>Photos</h4>
-                        <p>Attach photo to articles</p>
-                    </div>
-                    <div class="col-lg-6">
-                        <h4>Comment</h4>
-                        <p>Discuss your articles and articles of other users</p>
-                        <h4>Search</h4>
-                        <p>Look for interesting article</p>
-                    </div>
+                <div class="col-lg-6">
+                    <h4>Comment</h4>
+                    <p>Discuss your articles and articles of other users</p>
+                    <h4>Search</h4>
+                    <p>Look for interesting article</p>
                 </div>
-            }
-        </div>*@
+            </div>
+        }
+    </div>*@

@@ -2,6 +2,18 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "Binbin.Linq.PredicateBuilder/2.0.1": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.6/Binbin.Linq.PredicateBuilder.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.6/Binbin.Linq.PredicateBuilder.dll": {}
+        }
+      },
       "Libuv/1.9.1": {
         "type": "package",
         "dependencies": {
@@ -3522,6 +3534,16 @@
     }
   },
   "libraries": {
+    "Binbin.Linq.PredicateBuilder/2.0.1": {
+      "sha512": "ntQfhCVHYEL5DJA9gVa7Vw+61mcA0xbMDaPgTbyNwqEhvEdw2eSYJolXfy2erlYFcaUyxjla6MYWRWzopPW49Q==",
+      "type": "package",
+      "path": "binbin.linq.predicatebuilder/2.0.1",
+      "files": [
+        "binbin.linq.predicatebuilder.2.0.1.nupkg.sha512",
+        "binbin.linq.predicatebuilder.nuspec",
+        "lib/netstandard1.6/Binbin.Linq.PredicateBuilder.dll"
+      ]
+    },
     "Libuv/1.9.1": {
       "sha512": "uqX2Frwf9PW8MaY7PRNY6HM5BpW1D8oj1EdqzrmbEFD5nH63Yat3aEjN/tws6Tw6Fk7LwmLBvtUh32tTeTaHiA==",
       "type": "package",
@@ -9482,6 +9504,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v1.0": [
+      "Binbin.Linq.PredicateBuilder >= 2.0.1",
       "Diploma.Core >= 1.0.0",
       "Diploma.Repositories >= 1.0.0",
       "Microsoft.NETCore.App >= 1.0.4"
@@ -9521,6 +9544,10 @@
             "target": "Package",
             "version": "1.0.4",
             "autoReferenced": true
+          },
+          "Binbin.Linq.PredicateBuilder": {
+            "target": "Package",
+            "version": "2.0.1"
           }
         }
       }

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Diploma.Core.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -68,10 +69,10 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <ul class="nav nav-list">
-                            <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> Uploaded</a></li>
-                            <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> Uploaded</a></li>
-                            <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> Uploaded</a></li>
-                            <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> Uploaded</a></li>
+                            @foreach (var folder in @ViewData["Folders"] as IEnumerable<UserFolder>)
+                            {
+                                <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.Documents.Count</span></a></li>
+                            }                            
                         </ul>
                     </div>
                 </div>

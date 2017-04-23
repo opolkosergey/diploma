@@ -32,6 +32,14 @@ namespace Diploma.Repositories
             await ctx.SaveChangesAsync();
         }
 
+        public async Task Update(Document document)
+        {
+            ctx.Entry(document).State = EntityState.Modified;
+            ctx.Documents.Update(document);
+
+            await ctx.SaveChangesAsync();
+        }
+
         public async Task<Document> Get(ApplicationUser user, int documentId)
         {
             var document = await ctx.Documents
@@ -44,6 +52,14 @@ namespace Diploma.Repositories
             }
 
             return document;
+        }
+
+        public IEnumerable<Document> FindBy(Func<Document, bool> func)
+        {
+            return ctx.Documents
+                .Include(i => i.DocumentAccesses)
+                .Where(func)
+                .ToList();
         }
     }
 }

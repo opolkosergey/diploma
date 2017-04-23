@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Diploma.Core.Models;
 
 namespace Diploma.Core.Models
 {
@@ -23,10 +22,14 @@ namespace Diploma.Core.Models
 
         public string Version { get; set; }
 
-        public virtual ICollection<DocumentAccess> DocumentAccesses { get; set; }
+        public string SignedByUser { get; set; }
+
+        public string Signature { get; set; }
 
         public int UserFolderId { get; set; }
 
-        public virtual UserFolder UserFolder { get; set; }
+        public virtual ICollection<DocumentAccess> DocumentAccesses { get; set; }
+
+        public virtual UserFolder UserFolder { get; set; }              
     }
 }

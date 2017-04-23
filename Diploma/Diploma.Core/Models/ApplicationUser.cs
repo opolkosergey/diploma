@@ -13,5 +13,7 @@ namespace Diploma.Core.Models
         public virtual Organization Organization { get; set; }
 
         public virtual ICollection<UserFolder> UserFolders { get; set; }
+
+        public virtual UserKeys UserKeys { get; set; }
     }
 }

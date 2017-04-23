@@ -1,8 +1,9 @@
 ﻿using System;
 
-namespace EmailSender
+namespace Diploma.Search
 {
     public class Class1
     {
+
     }
 }

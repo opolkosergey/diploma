@@ -61,6 +61,7 @@ namespace Diploma.Core.Migrations
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
+                    IsOrganizationOwner = table.Column<bool>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
@@ -119,6 +120,33 @@ namespace Diploma.Core.Migrations
                     table.PrimaryKey("PK_UserFolders", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserFolders_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserKeys",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    D = table.Column<byte[]>(nullable: true),
+                    DP = table.Column<byte[]>(nullable: true),
+                    DQ = table.Column<byte[]>(nullable: true),
+                    Exponent = table.Column<byte[]>(nullable: true),
+                    InverseQ = table.Column<byte[]>(nullable: true),
+                    Modulus = table.Column<byte[]>(nullable: true),
+                    P = table.Column<byte[]>(nullable: true),
+                    Q = table.Column<byte[]>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserKeys", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserKeys_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -199,6 +227,8 @@ namespace Diploma.Core.Migrations
                     Content = table.Column<byte[]>(nullable: true),
                     ContentType = table.Column<string>(maxLength: 100, nullable: true),
                     DocumentName = table.Column<string>(maxLength: 255, nullable: true),
+                    Signature = table.Column<string>(nullable: true),
+                    SignedByUser = table.Column<string>(nullable: true),
                     Size = table.Column<double>(nullable: false),
                     UploadedDate = table.Column<DateTime>(nullable: false),
                     UserFolderId = table.Column<int>(nullable: false),
@@ -267,6 +297,12 @@ namespace Diploma.Core.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserKeys_ApplicationUserId",
+                table: "UserKeys",
+                column: "ApplicationUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName");
@@ -301,6 +337,9 @@ namespace Diploma.Core.Migrations
         {
             migrationBuilder.DropTable(
                 name: "DocumentAccesses");
+
+            migrationBuilder.DropTable(
+                name: "UserKeys");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

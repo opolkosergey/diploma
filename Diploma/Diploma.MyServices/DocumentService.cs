@@ -14,6 +14,11 @@ namespace Diploma.Services
     {
         private readonly DocumentRepository _documentRepository = new DocumentRepository();
 
+        public async Task Update(Document document)
+        {
+            await _documentRepository.Update(document);
+        }
+
         public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
         {
             var document = await _documentRepository.Get(user, id);
@@ -23,6 +28,11 @@ namespace Diploma.Services
             result.FileDownloadName = CreateDocumentNameUsingVersion(document);
 
             return result;
+        }
+
+        public async Task<Document> Get(ApplicationUser user, int id)
+        {
+            return await _documentRepository.Get(user, id);
         }
 
         public async Task<IEnumerable<Document>> GetAll()

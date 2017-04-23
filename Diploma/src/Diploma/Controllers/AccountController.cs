@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
 using Diploma.Core.Models.AccountViewModels;
+using Diploma.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +45,7 @@ namespace Diploma.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
+            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -54,6 +57,7 @@ namespace Diploma.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -91,6 +95,7 @@ namespace Diploma.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
+            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -102,9 +107,16 @@ namespace Diploma.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
+            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                RSAParameters rsaParameters;
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                {
+                    rsaParameters = rsa.ExportParameters(true);
+                }
+                               
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -115,7 +127,8 @@ namespace Diploma.Controllers
                         {
                             Name = "Uploaded"
                         }
-                    }
+                    },
+                    UserKeys = rsaParameters.ConvetToUserKeys()
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

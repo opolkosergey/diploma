@@ -12,6 +12,10 @@ namespace Diploma.Repositories.Abstracts
 
         Task Save(Document document, ApplicationUser user);
 
+        Task Update(Document document);
+
         Task<Document> Get(ApplicationUser user, int documentId);
+
+        IEnumerable<Document> FindBy(Func<Document, bool> func);
     }
 }

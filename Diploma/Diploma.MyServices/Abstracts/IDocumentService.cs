@@ -8,9 +8,13 @@ namespace Diploma.Services.Abstracts
 {
     public interface IDocumentService
     {
+        Task<Document> Get(ApplicationUser user, int id);
+
         Task<IEnumerable<Document>> GetAll();
         
         Task Save(IFormFile file, string filderName, ApplicationUser user);
+
+        Task Update(Document document);
 
         Task<FileContentResult> DownloadFile(int id, ApplicationUser user);
     }

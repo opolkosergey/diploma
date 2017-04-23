@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -27,6 +28,8 @@ namespace Diploma.Core.Data
         public DbSet<Document> Documents { get; set; }
         
         public DbSet<DocumentAccess> DocumentAccesses { get; set; }
+
+        public DbSet<UserKeys> UserKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

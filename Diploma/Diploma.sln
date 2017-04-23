@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Services", "Diploma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.EmailSender", "Diploma.EmailSender\Diploma.EmailSender.csproj", "{7AFF9A2D-8D4B-4E05-A89A-285DD3227028}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.DocumentSign", "Diploma.DocumentSign\Diploma.DocumentSign.csproj", "{3914B23E-11C5-4719-AF70-424FFDF27170}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{7AFF9A2D-8D4B-4E05-A89A-285DD3227028}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AFF9A2D-8D4B-4E05-A89A-285DD3227028}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AFF9A2D-8D4B-4E05-A89A-285DD3227028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3914B23E-11C5-4719-AF70-424FFDF27170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3914B23E-11C5-4719-AF70-424FFDF27170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3914B23E-11C5-4719-AF70-424FFDF27170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3914B23E-11C5-4719-AF70-424FFDF27170}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,5 +59,6 @@ Global
 		{E64B075B-1267-4AE8-818C-9B2AACACDA90} = {5049418A-A06B-4C1E-93E0-7F3B5121CF88}
 		{266CC2C1-0054-4BC1-B8DD-51AC68358F8C} = {5049418A-A06B-4C1E-93E0-7F3B5121CF88}
 		{7AFF9A2D-8D4B-4E05-A89A-285DD3227028} = {5049418A-A06B-4C1E-93E0-7F3B5121CF88}
+		{3914B23E-11C5-4719-AF70-424FFDF27170} = {5049418A-A06B-4C1E-93E0-7F3B5121CF88}
 	EndGlobalSection
 EndGlobal
