@@ -1,7 +1,7 @@
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.Core.deps.json
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.Core.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.Core.pdb
-C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.csprojResolveAssemblyReference.cache
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.AssemblyInfo.cs
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.pdb
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.csprojResolveAssemblyReference.cache

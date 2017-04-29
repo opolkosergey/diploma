@@ -1,11 +1,11 @@
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Services.deps.json
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\obj\Debug\netcoreapp1.0\Diploma.Services.csprojResolveAssemblyReference.cache
+C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\obj\Debug\netcoreapp1.0\Diploma.Services.AssemblyInfo.cs
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Services.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Services.pdb
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Core.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Repositories.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Core.pdb
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\bin\Debug\netcoreapp1.0\Diploma.Repositories.pdb
-C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\obj\Debug\netcoreapp1.0\Diploma.Services.csprojResolveAssemblyReference.cache
-C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\obj\Debug\netcoreapp1.0\Diploma.Services.AssemblyInfo.cs
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\obj\Debug\netcoreapp1.0\Diploma.Services.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.MyServices\obj\Debug\netcoreapp1.0\Diploma.Services.pdb

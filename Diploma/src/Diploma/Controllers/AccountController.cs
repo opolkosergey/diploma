@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Diploma.Services;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Diploma.Controllers
 {
@@ -21,6 +22,7 @@ namespace Diploma.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
@@ -30,12 +32,14 @@ namespace Diploma.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, 
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
+            _roleManager = roleManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -116,7 +120,15 @@ namespace Diploma.Controllers
                 {
                     rsaParameters = rsa.ExportParameters(true);
                 }
-                               
+
+                var rolesIds = new List<string>();
+                rolesIds.Add((await _roleManager.FindByNameAsync("Employee")).Id);
+
+                if (model.Email == "opolkosergey@bsuir.com")
+                {
+                    rolesIds.Add((await _roleManager.FindByNameAsync("Administrator")).Id);
+                }
+                
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -128,8 +140,16 @@ namespace Diploma.Controllers
                             Name = "Uploaded"
                         }
                     },
-                    UserKeys = rsaParameters.ConvetToUserKeys()
+                    UserKeys = rsaParameters.ConvetToUserKeys(),
+                    Roles =
+                    {
+                        new IdentityUserRole<string>
+                        {
+                            RoleId = rolesIds.Last()
+                        }
+                    }
                 };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

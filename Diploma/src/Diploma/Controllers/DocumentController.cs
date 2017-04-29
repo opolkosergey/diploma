@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.DocumentSign;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Diploma.Controllers
 {
@@ -14,16 +15,19 @@ namespace Diploma.Controllers
     {
         private UserManager<ApplicationUser> _userManager;
 
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly DocumentService _documentService = new DocumentService();
 
         private readonly DocumentSignService _documentSignService = new DocumentSignService();
 
         private readonly UserService _userService;
 
-        public DocumentController(UserManager<ApplicationUser> userManager)
+        public DocumentController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-            _userService = new UserService(userManager);
+            _roleManager = roleManager;
+            _userService = new UserService(userManager, roleManager);
         }
 
         [HttpPost]

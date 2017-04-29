@@ -29,14 +29,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="@Url.Action("Index", "Article")">HOME</a>
+                    @if (!User.IsInRole("Employee"))
+                    {
+                        <a class="navbar-brand" href="@Url.Action("Index", "Article")">HOME</a>
+                    }
+                    
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="@Url.Action("CreateBlog", "Blog")">Create blog</a></li>
-                        @if (User.IsInRole("Admin"))
+                        @*<li><a href="@Url.Action("CreateBlog", "Blog")">Create blog</a></li>*@
+                        @if (User.IsInRole("Administrator"))
                         {
                             <li><a href="@Url.Action("Users", "Home", new {forEdit = true})">Managing Roles</a></li>
+                        }
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li><a href="@Url.Action("CreateOrganization", "Admin" )">Create new organization</a></li>
                         }
                     </ul>
                     <form class="navbar-form navbar-left" action="/Search/ByTag" role="search">
@@ -66,16 +74,20 @@
                         </ul>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <ul class="nav nav-list">
-                            @foreach (var folder in @ViewData["Folders"] as IEnumerable<UserFolder>)
-                            {
-                                <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.Documents.Count</span></a></li>
-                            }                            
-                        </ul>
+                @if (!User.IsInRole("Administrator"))
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <ul class="nav nav-list">
+                                @foreach (var folder in @ViewData["Folders"] as IEnumerable<UserFolder>)
+                                {
+                                    <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.Documents.Count</span></a></li>
+                                }                            
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                }
+                
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <ul class="nav nav-list">

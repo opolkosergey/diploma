@@ -8,20 +8,49 @@ using Diploma.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.Pagging;
 using Diploma.Services;
+using Diploma.ViewModels.AdminViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Diploma.Controllers
 {
     public class HomeController : Controller
     {
         private readonly DocumentService _documentService = new DocumentService();
-        private UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly UserService _userService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(UserManager<ApplicationUser> userManager)
+        public HomeController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-            _userService = new UserService(userManager);
+            _roleManager = roleManager;
+            _userService = new UserService(userManager, roleManager);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> UpdateUser(string email, string role, string organization)
+        {
+            await _userService.UpdateUserByAdmin(email, role, organization);
+
+            return RedirectToAction("Users", "Home", new { forEdit = true });
+        }
+
+        public IActionResult Users(int page = 1, bool forEdit = false)
+        {
+            ViewBag.ForEdit = forEdit;
+
+            var users = _userManager.Users.Select(user => new AdminUserModel
+            {
+                Email = user.Email,
+                Organization = user.Organization == null ? null : user.Organization.Name,
+                Role = _roleManager.Roles.First(x => x.Id == user.Roles.First().RoleId).Name
+            }).Where(u => u.Role != "Administrator");
+
+            AddUserFolderToResponse(User.Identity.Name);
+
+            return View(PaginatedList<AdminUserModel>.CreateAsync(users.ToList(),  1, 10));
         }
 
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page, bool loginAsAnonimous)
@@ -181,7 +210,7 @@ namespace Diploma.Controllers
                     documents = documents.OrderBy(s => s.DocumentName).ToList();
                     break;
             }
-            int pageSize = 10;
+            int pageSize = 10;            
 
             return View(PaginatedList<Document>.CreateAsync(documents, page ?? 1, pageSize));
         }
@@ -196,20 +225,6 @@ namespace Diploma.Controllers
             {
                 ViewData["Folders"] = _userService.GetUserByEmail(User.Identity.Name).UserFolders.AsEnumerable();
             }
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
         }
 
         public IActionResult Error()

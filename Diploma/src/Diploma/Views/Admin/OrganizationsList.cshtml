@@ -1,0 +1,67 @@
+@model Diploma.Pagging.PaginatedList<Diploma.Core.Models.Organization>
+
+    <div class="col-lg-9">
+        <h2>Organizations</h2>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th style="text-align: center">
+                        Address
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Users count
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+        {
+                    
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @item.Employees.Count
+                            </td>
+                            </tr>
+                            
+                   
+        }
+            </tbody>
+        </table>
+        @{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-loginAsAnonimous="@ViewData["anonimous"]"
+           class="btn btn-default @prevDisabled btn">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-loginAsAnonimous="@ViewData["anonimous"]"
+           class="btn btn-default @nextDisabled btn">
+            Next
+        </a>
+    </div>
