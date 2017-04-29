@@ -7,3 +7,12 @@ C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\o
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.AssemblyInfo.cs
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.pdb
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.DocumentSign.deps.json
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.DocumentSign.dll
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.DocumentSign.pdb
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Core.dll
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Core.pdb
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.csprojResolveAssemblyReference.cache
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.AssemblyInfo.cs
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.dll
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.pdb

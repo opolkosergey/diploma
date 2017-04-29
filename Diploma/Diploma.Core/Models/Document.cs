@@ -26,10 +26,8 @@ namespace Diploma.Core.Models
 
         public string Signature { get; set; }
 
-        public int UserFolderId { get; set; }
-
         public virtual ICollection<DocumentAccess> DocumentAccesses { get; set; }
 
-        public virtual UserFolder UserFolder { get; set; }              
+        public virtual ICollection<DocumentFolder> DocumentFolders { get; set; }              
     }
 }

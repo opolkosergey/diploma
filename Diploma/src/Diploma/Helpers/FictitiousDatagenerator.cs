@@ -9,45 +9,45 @@ namespace Diploma.Helpers
         {
             return new List<UserFolder>
             {
-                new UserFolder
-                {
-                    Name = "Uploaded",
-                    Documents = new List<Document>
-                    {
-                        new Document()
-                    }
-                },
-                new UserFolder
-                {
-                    Name = "My folder name 1",
-                    Documents = new List<Document>
-                    {
-                        new Document(),
-                        new Document()
-                    }
-                },
-                new UserFolder
-                {
-                    Name = "My folder name 2",
-                    Documents = new List<Document>
-                    {
-                        new Document(),
-                        new Document(),
-                        new Document(),
-                        new Document()
-                    }
-                },
-                new UserFolder
-                {
-                    Name = "My folder name 3",
-                    Documents = new List<Document>
-                    {
-                        new Document(),
-                        new Document(),
-                        new Document(),
-                        new Document()
-                    }
-                }
+                //new UserFolder
+                //{
+                //    Name = "Uploaded",
+                //    Documents = new List<Document>
+                //    {
+                //        new Document()
+                //    }
+                //},
+                //new UserFolder
+                //{
+                //    Name = "My folder name 1",
+                //    Documents = new List<Document>
+                //    {
+                //        new Document(),
+                //        new Document()
+                //    }
+                //},
+                //new UserFolder
+                //{
+                //    Name = "My folder name 2",
+                //    Documents = new List<Document>
+                //    {
+                //        new Document(),
+                //        new Document(),
+                //        new Document(),
+                //        new Document()
+                //    }
+                //},
+                //new UserFolder
+                //{
+                //    Name = "My folder name 3",
+                //    Documents = new List<Document>
+                //    {
+                //        new Document(),
+                //        new Document(),
+                //        new Document(),
+                //        new Document()
+                //    }
+                //}
             };
         }
     }

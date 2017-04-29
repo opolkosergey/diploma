@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Diploma.Core.Models
 {
@@ -14,6 +12,6 @@ namespace Diploma.Core.Models
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        public virtual ICollection<Document> Documents { get; set; }
+        public virtual ICollection<DocumentFolder> DocumentFolders { get; set; }
     }
 }

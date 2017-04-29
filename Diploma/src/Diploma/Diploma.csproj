@@ -79,6 +79,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Admin\" />
+    <Folder Include="Views\UserTask\" />
   </ItemGroup>
 
 </Project>

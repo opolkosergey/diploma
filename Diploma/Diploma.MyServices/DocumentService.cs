@@ -19,9 +19,21 @@ namespace Diploma.Services
             await _documentRepository.Update(document);
         }
 
+        public async Task AddAccessForUser(ApplicationUser user, int documentId)
+        {
+            var document = await _documentRepository.Get(documentId);
+
+            document.DocumentAccesses.Add(new DocumentAccess
+            {
+                User = user.Email
+            });
+
+            await Update(document);
+        }
+
         public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
         {
-            var document = await _documentRepository.Get(user, id);
+            var document = await _documentRepository.Get(id);
 
             var result = new FileContentResult(document.Content, document.ContentType);
 
@@ -32,7 +44,16 @@ namespace Diploma.Services
 
         public async Task<Document> Get(ApplicationUser user, int id)
         {
-            return await _documentRepository.Get(user, id);
+            var document = await _documentRepository.Get(id);
+
+            if (document != null && document.DocumentAccesses.Any(x => x.User == user.Email))
+            {
+                return document;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<IEnumerable<Document>> GetAll()
@@ -50,7 +71,7 @@ namespace Diploma.Services
                 {
                     Name = folderName,
                     ApplicationUser = user,
-                    Documents = new List<Document>()
+                    ApplicationUserId = user.Id
                 };
 
                 user.UserFolders.Add(folder);
@@ -62,7 +83,10 @@ namespace Diploma.Services
             {
                 ContentType = file.ContentType,
                 DocumentName = documentName,
-                UserFolderId = folder.Id,
+                //UserFolders = new List<UserFolder>
+                //{
+                //    folder
+                //},
                 UploadedDate = DateTime.Now,
                 Version = await SetDocumentVersion(documentName),
                 Size = file.Length,
@@ -72,7 +96,7 @@ namespace Diploma.Services
                     {
                         User = user.Email
                     }
-                },
+                }
             };
 
             using (var reader = new System.IO.BinaryReader(file.OpenReadStream()))
@@ -80,7 +104,14 @@ namespace Diploma.Services
                 document.Content = reader.ReadBytes((int)file.Length);
             }
 
-            await _documentRepository.Save(document, user);
+            folder.DocumentFolders.Add(
+                new DocumentFolder
+                {
+                    Document = document
+                }
+            );
+
+            await _documentRepository.Save(document, folder, user);
         }
 
         private string ParseFileName(string fileName)

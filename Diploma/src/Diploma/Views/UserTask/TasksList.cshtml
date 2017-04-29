@@ -1,0 +1,65 @@
+@model IEnumerable<Diploma.Core.Models.UserTask>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Summary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SignatureRequired)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SignatureFromUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Creator)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AssignedTo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaskStatus)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SignatureRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SignatureFromUser)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Creator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskStatus)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

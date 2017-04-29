@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using Diploma.Core.Models;
+﻿using Diploma.Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,12 +26,35 @@ namespace Diploma.Core.Data
 
         public DbSet<UserKeys> UserKeys { get; set; }
 
+        public DbSet<SignatureRequest> SignatureRequests { get; set; }
+
+        public DbSet<AuditEntry> AuditEntries { get; set; }
+
+        public DbSet<SignatureWarrant> SignatureWarrants { get; set; }
+
+        public DbSet<UserTask> UserTasks { get; set; }
+
+        public DbSet<DocumentFolder> DocumentFolders { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ApplicationUser>().HasMany(x => x.UserFolders).WithOne(x => x.ApplicationUser).HasForeignKey(x => x.ApplicationUserId);
+
+            //builder.Entity<ApplicationUser>().HasOne(x => x.UserKeys).WithOne(x => x.ApplicationUser);
+
+            builder.Entity<DocumentFolder>().HasKey(e => new {e.DocumentId, e.UserFolderId});
+
+            builder.Entity<DocumentFolder>()
+                .HasOne(x => x.Document)
+                .WithMany(x => x.DocumentFolders)
+                .HasForeignKey(x => x.DocumentId);
+
+            builder.Entity<DocumentFolder>()
+                .HasOne(x => x.UserFolder)
+                .WithMany(x => x.DocumentFolders)
+                .HasForeignKey(x => x.UserFolderId);
+
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)

@@ -10,11 +10,11 @@ namespace Diploma.Repositories.Abstracts
     {
         Task<IEnumerable<Document>> GetAll(); 
 
-        Task Save(Document document, ApplicationUser user);
+        Task Save(Document document, DocumentFolder documentFolder);
 
         Task Update(Document document);
 
-        Task<Document> Get(ApplicationUser user, int documentId);
+        Task<Document> Get(int documentId);
 
         IEnumerable<Document> FindBy(Func<Document, bool> func);
     }

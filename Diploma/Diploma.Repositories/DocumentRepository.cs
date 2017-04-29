@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Repositories
 {
-    public class DocumentRepository : IDocumentRepository
+    public class DocumentRepository //: IDocumentRepository
     {
         private readonly ApplicationDbContext ctx = new ApplicationDbContext();
 
@@ -20,9 +20,11 @@ namespace Diploma.Repositories
                 .ToListAsync();
         }
 
-        public async Task Save(Document document, ApplicationUser user)
+        public async Task Save(Document document, UserFolder documentFolder, ApplicationUser user)
         {           
-            ctx.Documents.Add(document);
+            ctx.UserFolders.Update(documentFolder);
+            ctx.Entry(user).State = EntityState.Unchanged;
+            ctx.Entry(user.Roles.First()).State = EntityState.Unchanged;
 
             //user.OrganizationId = 1;
             //user.Organization = ctx.Organizations.First();
@@ -40,7 +42,7 @@ namespace Diploma.Repositories
             await ctx.SaveChangesAsync();
         }
 
-        public async Task<Document> Get(ApplicationUser user, int documentId)
+        public async Task<Document> Get(int documentId)
         {
             var document = await ctx.Documents
                 .Include(i => i.DocumentAccesses)

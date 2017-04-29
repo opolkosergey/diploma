@@ -5,79 +5,92 @@
     <br />
     <table class="table">
         <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th style="text-align: center">
-                Role
-            </th>
-            <th>
-                Organization
-            </th>     
-            <th></th>
-        </tr>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th style="text-align: center">
+                    Role
+                </th>
+                <th>
+                    Organization
+                </th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
-        {            
-            <form asp-action="UpdateUser">
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    @Html.Hidden("email", item.Email)
-            <td style="text-align: center">
-                <select class="form-control" name="role" style="display: inline;">
-                    @if (item.Role == "Employee")
-                    {
-                        <option value="Employee" selected="selected">Employee</option>
-                    }
-                    else
-                    {
-                        <option value="Employee">Employee</option>
-                    }
-                    @if (item.Role == "Administrator")
-                            {
-                                <option value="Administrator" selected="selected">Administrator</option>
-                            }
-                            else
-                            {
-                                <option value="Administrator">Administrator</option>
-                            }
-                    @if (item.Role == "OrganizationOwner")
-                    {
-                        <option value="OrganizationOwner" selected="selected">OrganizationOwner</option>
-                    }
-                    else
-                    {
-                        <option value="OrganizationOwner">OrganizationOwner</option>
-                    }
-                    @if (item.Role == "OrganizationLead")
-                    {
-                        <option value="OrganizationLead" selected="selected">OrganizationLead</option>
-                    }
-                    else
-                    {
-                        <option value="OrganizationLead">OrganizationLead</option>
-                    }
-                </select>
-            </td>
-            <td></td>
-                
-            <td>
-                <input type="submit" class="btn btn-sm btn-default" value="Update" />
-            </td>
-        </tr>
-            </form>
-        }
+            @foreach (var item in Model)
+            {
+                <form asp-action="UpdateUser">
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        @Html.Hidden("email", item.Email)
+                        <td style="text-align: center">
+                            <select class="form-control" name="role" style="display: inline;">
+                                @if (item.Role == "Employee")
+                                {
+                                    <option value="Employee" selected="selected">Employee</option>
+                                }
+                                else
+                                {
+                                    <option value="Employee">Employee</option>
+                                }
+                                @if (item.Role == "Administrator")
+                                {
+                                    <option value="Administrator" selected="selected">Administrator</option>
+                                }
+                                else
+                                {
+                                    <option value="Administrator">Administrator</option>
+                                }
+                                @if (item.Role == "OrganizationOwner")
+                                {
+                                    <option value="OrganizationOwner" selected="selected">OrganizationOwner</option>
+                                }
+                                else
+                                {
+                                    <option value="OrganizationOwner">OrganizationOwner</option>
+                                }
+                                @if (item.Role == "OrganizationLead")
+                                {
+                                    <option value="OrganizationLead" selected="selected">OrganizationLead</option>
+                                }
+                                else
+                                {
+                                    <option value="OrganizationLead">OrganizationLead</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control" name="role" style="display: inline;">
+                                @foreach (var org in ViewData["organizations"] as IEnumerable<string>)
+                                {
+                                    if (item.Organization == org)
+                                    {
+                                        <option value="organization" selected="selected">@org</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="organization">@org</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="submit" class="btn btn-sm btn-default" value="Update" />
+                        </td>
+                    </tr>
+                </form>
+            }
         </tbody>
     </table>
     @{
         var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
         var nextDisabled = !Model.HasNextPage ? "disabled" : "";
     }
-    
+
     <a asp-action="Index"
        asp-route-sortOrder="@ViewData["CurrentSort"]"
        asp-route-page="@(Model.PageIndex - 1)"

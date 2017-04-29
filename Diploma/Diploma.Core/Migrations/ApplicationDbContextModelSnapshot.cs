@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Diploma.Core.Data;
+using Diploma.Core.Models;
 
 namespace Diploma.Core.Migrations
 {
@@ -71,6 +72,22 @@ namespace Diploma.Core.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Diploma.Core.Models.AuditEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("Details");
+
+                    b.Property<string>("Source");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditEntries");
+                });
+
             modelBuilder.Entity("Diploma.Core.Models.Document", b =>
                 {
                     b.Property<int>("Id")
@@ -92,13 +109,9 @@ namespace Diploma.Core.Migrations
 
                     b.Property<DateTime>("UploadedDate");
 
-                    b.Property<int>("UserFolderId");
-
                     b.Property<string>("Version");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserFolderId");
 
                     b.ToTable("Documents");
                 });
@@ -119,6 +132,21 @@ namespace Diploma.Core.Migrations
                     b.ToTable("DocumentAccesses");
                 });
 
+            modelBuilder.Entity("Diploma.Core.Models.DocumentFolder", b =>
+                {
+                    b.Property<int>("DocumentId");
+
+                    b.Property<int>("UserFolderId");
+
+                    b.HasKey("DocumentId", "UserFolderId");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("UserFolderId");
+
+                    b.ToTable("DocumentFolders");
+                });
+
             modelBuilder.Entity("Diploma.Core.Models.Organization", b =>
                 {
                     b.Property<int>("Id")
@@ -133,6 +161,36 @@ namespace Diploma.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Organizations");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.SignatureRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DocumentId");
+
+                    b.Property<string>("ForUser");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SignatureRequests");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.SignatureWarrant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Expired");
+
+                    b.Property<string>("FromUser");
+
+                    b.Property<string>("ToUser");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SignatureWarrants");
                 });
 
             modelBuilder.Entity("Diploma.Core.Models.UserFolder", b =>
@@ -180,6 +238,33 @@ namespace Diploma.Core.Migrations
                         .IsUnique();
 
                     b.ToTable("UserKeys");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.UserTask", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AssignedTo")
+                        .IsRequired();
+
+                    b.Property<string>("Creator")
+                        .IsRequired();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("SignatureFromUser");
+
+                    b.Property<bool>("SignatureRequired");
+
+                    b.Property<string>("Summary")
+                        .IsRequired();
+
+                    b.Property<int>("TaskStatus");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserTasks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -296,19 +381,24 @@ namespace Diploma.Core.Migrations
                         .HasForeignKey("OrganizationId");
                 });
 
-            modelBuilder.Entity("Diploma.Core.Models.Document", b =>
-                {
-                    b.HasOne("Diploma.Core.Models.UserFolder", "UserFolder")
-                        .WithMany("Documents")
-                        .HasForeignKey("UserFolderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Diploma.Core.Models.DocumentAccess", b =>
                 {
                     b.HasOne("Diploma.Core.Models.Document", "Document")
                         .WithMany("DocumentAccesses")
                         .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.DocumentFolder", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.Document", "Document")
+                        .WithMany("DocumentFolders")
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Diploma.Core.Models.UserFolder", "UserFolder")
+                        .WithMany("DocumentFolders")
+                        .HasForeignKey("UserFolderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

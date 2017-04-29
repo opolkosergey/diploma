@@ -18,6 +18,8 @@ namespace Diploma.Controllers
     public class HomeController : Controller
     {
         private readonly DocumentService _documentService = new DocumentService();
+        private readonly OrganizationService organizationService = new OrganizationService();
+        private readonly UserTaskService _userTaskService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UserService _userService;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -27,17 +29,21 @@ namespace Diploma.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _userService = new UserService(userManager, roleManager);
+            _userTaskService = new UserTaskService(userManager, roleManager);
         }
 
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> UpdateUser(string email, string role, string organization)
         {
-            await _userService.UpdateUserByAdmin(email, role, organization);
+            var org = await organizationService.GetOrganizationByName(organization);
+
+            await _userService.UpdateUserByAdmin(email, role, org);
 
             return RedirectToAction("Users", "Home", new { forEdit = true });
         }
 
-        public IActionResult Users(int page = 1, bool forEdit = false)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Users(int page = 1, bool forEdit = false)
         {
             ViewBag.ForEdit = forEdit;
 
@@ -46,7 +52,9 @@ namespace Diploma.Controllers
                 Email = user.Email,
                 Organization = user.Organization == null ? null : user.Organization.Name,
                 Role = _roleManager.Roles.First(x => x.Id == user.Roles.First().RoleId).Name
-            }).Where(u => u.Role != "Administrator");
+            });//.Where(u => u.Role != "Administrator");
+
+            ViewData["organizations"] = (await organizationService.GetAll()).Select(x => x.Name);
 
             AddUserFolderToResponse(User.Identity.Name);
 
@@ -213,6 +221,27 @@ namespace Diploma.Controllers
             int pageSize = 10;            
 
             return View(PaginatedList<Document>.CreateAsync(documents, page ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> CreateUserTask(UserTask userTask)
+        {
+            await _userTaskService.CreateTask(userTask);
+
+            return await TasksList(_userService.GetUserByEmail(userTask.AssignedTo).OrganizationId.Value);
+        }
+
+        public async Task<IActionResult> TasksList(int organizationId)
+        {
+            var tasksForOrganization = _userTaskService.GetTasksForOrganization(organizationId);
+
+            return null;
+        }
+
+        public async Task<IActionResult> MyTasks()
+        {
+            var tasksForOrganization = _userTaskService.GetUserTasks(User.Identity.Name);
+
+            return null;
         }
 
         private void AddUserFolderToResponse(string identityName)

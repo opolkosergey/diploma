@@ -5,10 +5,45 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Diploma.Core.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AuditEntries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateTime = table.Column<DateTime>(nullable: false),
+                    Details = table.Column<string>(nullable: true),
+                    Source = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditEntries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Documents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Content = table.Column<byte[]>(nullable: true),
+                    ContentType = table.Column<string>(maxLength: 100, nullable: true),
+                    DocumentName = table.Column<string>(maxLength: 255, nullable: true),
+                    Signature = table.Column<string>(nullable: true),
+                    SignedByUser = table.Column<string>(nullable: true),
+                    Size = table.Column<double>(nullable: false),
+                    UploadedDate = table.Column<DateTime>(nullable: false),
+                    Version = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Documents", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Organizations",
                 columns: table => new
@@ -22,6 +57,54 @@ namespace Diploma.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Organizations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SignatureRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DocumentId = table.Column<int>(nullable: false),
+                    ForUser = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SignatureRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SignatureWarrants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Expired = table.Column<DateTime>(nullable: false),
+                    FromUser = table.Column<string>(nullable: true),
+                    ToUser = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SignatureWarrants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTasks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AssignedTo = table.Column<string>(nullable: false),
+                    Creator = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    SignatureFromUser = table.Column<string>(nullable: true),
+                    SignatureRequired = table.Column<bool>(nullable: false),
+                    Summary = table.Column<string>(nullable: false),
+                    TaskStatus = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTasks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,6 +133,26 @@ namespace Diploma.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocumentAccesses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DocumentId = table.Column<int>(nullable: false),
+                    User = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocumentAccesses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocumentAccesses_Documents_DocumentId",
+                        column: x => x.DocumentId,
+                        principalTable: "Documents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,48 +322,25 @@ namespace Diploma.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Documents",
+                name: "DocumentFolders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<byte[]>(nullable: true),
-                    ContentType = table.Column<string>(maxLength: 100, nullable: true),
-                    DocumentName = table.Column<string>(maxLength: 255, nullable: true),
-                    Signature = table.Column<string>(nullable: true),
-                    SignedByUser = table.Column<string>(nullable: true),
-                    Size = table.Column<double>(nullable: false),
-                    UploadedDate = table.Column<DateTime>(nullable: false),
-                    UserFolderId = table.Column<int>(nullable: false),
-                    Version = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Documents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Documents_UserFolders_UserFolderId",
-                        column: x => x.UserFolderId,
-                        principalTable: "UserFolders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DocumentAccesses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DocumentId = table.Column<int>(nullable: false),
-                    User = table.Column<string>(nullable: true)
+                    UserFolderId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocumentAccesses", x => x.Id);
+                    table.PrimaryKey("PK_DocumentFolders", x => new { x.DocumentId, x.UserFolderId });
                     table.ForeignKey(
-                        name: "FK_DocumentAccesses_Documents_DocumentId",
+                        name: "FK_DocumentFolders_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalTable: "Documents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DocumentFolders_UserFolders_UserFolderId",
+                        column: x => x.UserFolderId,
+                        principalTable: "UserFolders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -282,14 +362,19 @@ namespace Diploma.Core.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_UserFolderId",
-                table: "Documents",
-                column: "UserFolderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_DocumentAccesses_DocumentId",
                 table: "DocumentAccesses",
                 column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentFolders_DocumentId",
+                table: "DocumentFolders",
+                column: "DocumentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocumentFolders_UserFolderId",
+                table: "DocumentFolders",
+                column: "UserFolderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserFolders_ApplicationUserId",
@@ -336,10 +421,25 @@ namespace Diploma.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AuditEntries");
+
+            migrationBuilder.DropTable(
                 name: "DocumentAccesses");
 
             migrationBuilder.DropTable(
+                name: "DocumentFolders");
+
+            migrationBuilder.DropTable(
+                name: "SignatureRequests");
+
+            migrationBuilder.DropTable(
+                name: "SignatureWarrants");
+
+            migrationBuilder.DropTable(
                 name: "UserKeys");
+
+            migrationBuilder.DropTable(
+                name: "UserTasks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -360,10 +460,10 @@ namespace Diploma.Core.Migrations
                 name: "Documents");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "UserFolders");
 
             migrationBuilder.DropTable(
-                name: "UserFolders");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

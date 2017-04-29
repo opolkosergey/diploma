@@ -11,7 +11,7 @@ namespace Diploma.Filters
 {
     public class SearchService
     {
-        private readonly IDocumentRepository documentRepository = new DocumentRepository();
+        private readonly DocumentRepository documentRepository = new DocumentRepository();
 
         public IEnumerable<Document> SearchDocuments(string searchString)
         {

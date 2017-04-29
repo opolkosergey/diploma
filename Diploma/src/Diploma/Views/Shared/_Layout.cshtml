@@ -67,7 +67,7 @@
                     <div class="panel-body">
                         <ul class="nav nav-list">
                             <li><a href="@Url.Action("Index", "Article")"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-                            <li><a href="@Url.Action("CreateArticle", "Article")"><i class="glyphicon glyphicon-edit"></i> Create article</a></li>
+                            <li><a href="@Url.Action("CreateUserTask", "UserTask")"><i class="glyphicon glyphicon-edit"></i> Create user task</a></li>
                             <li><a href="@Url.Action("Blogs", "Blog")"><i class="glyphicon glyphicon-picture"></i> My blogs</a></li>
                             <li><a href="@Url.Action("Users", "Home")"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                             <li><a href="@Url.Action("About", "Home")"><i class="glyphicon glyphicon-question-sign"></i> Help</a></li>
@@ -81,7 +81,7 @@
                             <ul class="nav nav-list">
                                 @foreach (var folder in @ViewData["Folders"] as IEnumerable<UserFolder>)
                                 {
-                                    <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.Documents.Count</span></a></li>
+                                    <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.DocumentFolders.Count</span></a></li>
                                 }                            
                             </ul>
                         </div>

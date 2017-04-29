@@ -10,6 +10,8 @@ namespace Diploma.Services.Abstracts
     {
         ApplicationUser GetUserByEmail(string email);
 
-        Task UpdateUserByAdmin(string email, string role, string organizationName);
+        IEnumerable<ApplicationUser> GetAll();
+
+        Task UpdateUserByAdmin(string email, string role, Organization organization);
     }
 }

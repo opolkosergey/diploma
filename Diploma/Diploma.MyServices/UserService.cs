@@ -25,27 +25,41 @@ namespace Diploma.Services
         public ApplicationUser GetUserByEmail(string email)
         {
             var user = _userManager.Users
+                .Include(i => i.Organization)
                 .Include(i => i.Roles)                
                 .Include(i => i.UserFolders)
-                .ThenInclude(x => x.Documents)
+                .ThenInclude(x => x.DocumentFolders)
                 .Include(i => i.UserKeys)
-                .First(x => x.Email == email);
+                .FirstOrDefault(x => x.Email == email);
 
             return user;
         }
 
-        public async Task UpdateUserByAdmin(string email, string role, string organizationName)
+        public IEnumerable<ApplicationUser> GetAll()
+        {
+            return _userManager.Users
+                .Include(i => i.Organization)
+                .Include(i => i.Roles)
+                .Include(i => i.UserFolders)
+                //.ThenInclude(x => x.Documents)
+                .Include(i => i.UserKeys)
+                .ToList();
+        }
+
+        public async Task UpdateUserByAdmin(string email, string role, Organization organization)
         {
             var user = GetUserByEmail(email);
 
             var newRole = _roleManager.Roles.Single(x => x.Name == role);
-            //var newOrganization = 
 
             user.Roles.Clear();
             user.Roles.Add(new IdentityUserRole<string>
             {
                 RoleId = newRole.Id
             });
+
+            user.OrganizationId = organization.Id;
+            user.Organization = organization;            
 
             await _userManager.UpdateAsync(user);
         }
