@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.DocumentSign;
-using Diploma.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -50,7 +49,7 @@ namespace Diploma.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> DownloadFile(int id)
+        public async Task<FileResult> DownloadFile(int id)
         {
             var user = _userService.GetUserByEmail(User.Identity.Name);
 

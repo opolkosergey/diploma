@@ -125,7 +125,7 @@ namespace Diploma.Controllers
             return RedirectToAction("DocumentManage", documentModel.Id);
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page, bool loginAsAnonimous)
+        public async Task<IActionResult> Index(string sortOrder, /*string currentFilter,*/ string searchString, int? page, bool loginAsAnonimous)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -141,7 +141,7 @@ namespace Diploma.Controllers
             }
             else
             {
-                searchString = currentFilter;
+                //searchString = currentFilter;
             }
 
             ViewData["CurrentFilter"] = searchString;
@@ -292,6 +292,7 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult CreateSignatureWarrant()
         {
             AddUserFolderToResponse(User.Identity.Name);
@@ -300,6 +301,7 @@ namespace Diploma.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateSignatureWarrant(SignatureWarrant signatureWarrant)
         {
             var user = _userService.GetUserByEmail(User.Identity.Name);
@@ -309,7 +311,7 @@ namespace Diploma.Controllers
 
             var warrantUser = _userService.GetUserByEmail(signatureWarrant.ToUser);
 
-            await _signatureRequestService.CloneSignatureRequests(signatureWarrant, warrantUser);
+            await _signatureRequestService.CloneSignatureRequests(user, warrantUser);
 
             AddUserFolderToResponse(User.Identity.Name);
             return RedirectToAction("Index");
