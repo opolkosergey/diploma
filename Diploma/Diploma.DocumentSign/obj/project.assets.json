@@ -3926,14 +3926,14 @@
       ]
     },
     "Microsoft.AspNetCore.JsonPatch/1.0.0": {
-      "sha512": "WVaSVS+dDlWCR/qerHnBxU9tIeJ9GMA3M5tg4cxH7/cJYZZLnr2zvaFHGB+cRRNCKKTJ0pFRxT7ES8knhgAAaA==",
+      "sha512": "TFhm3NMZTvm8JmZ3yTwSlbVBaLBcSFqVlJn8WxC6voGcTb12TOVKWAHL0K5eHoYKEvUhKUvrP1ugeFua39Xueg==",
       "type": "package",
       "path": "microsoft.aspnetcore.jsonpatch/1.0.0",
       "files": [
-        "Microsoft.AspNetCore.JsonPatch.1.0.0.nupkg.sha512",
-        "Microsoft.AspNetCore.JsonPatch.nuspec",
         "lib/netstandard1.1/Microsoft.AspNetCore.JsonPatch.dll",
-        "lib/netstandard1.1/Microsoft.AspNetCore.JsonPatch.xml"
+        "lib/netstandard1.1/Microsoft.AspNetCore.JsonPatch.xml",
+        "microsoft.aspnetcore.jsonpatch.1.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.jsonpatch.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Localization/1.0.2": {
@@ -4539,16 +4539,16 @@
       ]
     },
     "Microsoft.Extensions.PlatformAbstractions/1.0.0": {
-      "sha512": "zyjUzrOmuevOAJpIo3Mt5GmpALVYCVdLZ99keMbmCxxgQH7oxzU58kGHzE6hAgYEiWsdfMJLjVR7r+vSmaJmtg==",
+      "sha512": "+SMcyAqMVmGIP/nOLyVLOhnYVJNawYSm5ZogbZ+kA34eDuPdlunds4bLvT5wiiHm+El+aZr8OSGE6u4d245u+w==",
       "type": "package",
       "path": "microsoft.extensions.platformabstractions/1.0.0",
       "files": [
-        "Microsoft.Extensions.PlatformAbstractions.1.0.0.nupkg.sha512",
-        "Microsoft.Extensions.PlatformAbstractions.nuspec",
         "lib/net451/Microsoft.Extensions.PlatformAbstractions.dll",
         "lib/net451/Microsoft.Extensions.PlatformAbstractions.xml",
         "lib/netstandard1.3/Microsoft.Extensions.PlatformAbstractions.dll",
-        "lib/netstandard1.3/Microsoft.Extensions.PlatformAbstractions.xml"
+        "lib/netstandard1.3/Microsoft.Extensions.PlatformAbstractions.xml",
+        "microsoft.extensions.platformabstractions.1.0.0.nupkg.sha512",
+        "microsoft.extensions.platformabstractions.nuspec"
       ]
     },
     "Microsoft.Extensions.Primitives/1.0.1": {
@@ -9772,15 +9772,15 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Siarhei_Opolko\\.nuget\\packages\\": {}
+    "C:\\Users\\Sergey\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Repository\\diploma\\Diploma\\Diploma.DocumentSign\\Diploma.DocumentSign.csproj",
+      "projectUniqueName": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.DocumentSign\\Diploma.DocumentSign.csproj",
       "projectName": "Diploma.DocumentSign",
-      "projectPath": "C:\\Repository\\diploma\\Diploma\\Diploma.DocumentSign\\Diploma.DocumentSign.csproj",
-      "outputPath": "C:\\Repository\\diploma\\Diploma\\Diploma.DocumentSign\\obj\\",
+      "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.DocumentSign\\Diploma.DocumentSign.csproj",
+      "outputPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.DocumentSign\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.0"
@@ -9788,8 +9788,8 @@
       "frameworks": {
         "netcoreapp1.0": {
           "projectReferences": {
-            "C:\\Repository\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj": {
-              "projectPath": "C:\\Repository\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj"
+            "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj": {
+              "projectPath": "C:\\Users\\Sergey\\Documents\\Диплом\\v3\\diploma\\Diploma\\Diploma.Core\\Diploma.Core.csproj"
             }
           }
         }

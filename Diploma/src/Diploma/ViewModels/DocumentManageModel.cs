@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Diploma.ViewModels
 {
@@ -10,7 +11,10 @@ namespace Diploma.ViewModels
 
         public string Version { get; set; }
 
+        [Required]
         public string NewAccessForUser { get; set; }
+
+        public bool RequestSignature { get; set; }
 
         public IEnumerable<string> UsersWithAccess { get; set; }
     }

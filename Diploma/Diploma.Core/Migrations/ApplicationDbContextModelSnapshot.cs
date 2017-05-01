@@ -31,8 +31,6 @@ namespace Diploma.Core.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<bool?>("IsOrganizationOwner");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -147,6 +145,24 @@ namespace Diploma.Core.Migrations
                     b.ToTable("DocumentFolders");
                 });
 
+            modelBuilder.Entity("Diploma.Core.Models.IncomingSignatureRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int>("DocumentId");
+
+                    b.Property<string>("UserRequester");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("IncomingSignatureRequests");
+                });
+
             modelBuilder.Entity("Diploma.Core.Models.Organization", b =>
                 {
                     b.Property<int>("Id")
@@ -163,32 +179,20 @@ namespace Diploma.Core.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("Diploma.Core.Models.SignatureRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DocumentId");
-
-                    b.Property<string>("ForUser");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SignatureRequests");
-                });
-
             modelBuilder.Entity("Diploma.Core.Models.SignatureWarrant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Expired");
+                    b.Property<string>("ApplicationUserId");
 
-                    b.Property<string>("FromUser");
+                    b.Property<DateTime>("Expired");
 
                     b.Property<string>("ToUser");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("SignatureWarrants");
                 });
@@ -400,6 +404,20 @@ namespace Diploma.Core.Migrations
                         .WithMany("DocumentFolders")
                         .HasForeignKey("UserFolderId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.IncomingSignatureRequest", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("IncomingSignatureRequests")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Diploma.Core.Models.SignatureWarrant", b =>
+                {
+                    b.HasOne("Diploma.Core.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("SignatureWarrants")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Diploma.Core.Models.UserFolder", b =>

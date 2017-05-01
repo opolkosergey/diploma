@@ -11,7 +11,7 @@ namespace Diploma.Repositories
     {
         private readonly ApplicationDbContext ctx = new ApplicationDbContext();
 
-        public async Task CreateTask(SignatureWarrant signatureWarrant)
+        public async Task CreateSignatureWarrant(SignatureWarrant signatureWarrant)
         {
             ctx.SignatureWarrants.Add(signatureWarrant);
 

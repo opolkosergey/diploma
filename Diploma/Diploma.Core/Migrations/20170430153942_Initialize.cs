@@ -60,35 +60,6 @@ namespace Diploma.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SignatureRequests",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    DocumentId = table.Column<int>(nullable: false),
-                    ForUser = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SignatureRequests", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SignatureWarrants",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Expired = table.Column<DateTime>(nullable: false),
-                    FromUser = table.Column<string>(nullable: true),
-                    ToUser = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SignatureWarrants", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserTasks",
                 columns: table => new
                 {
@@ -164,7 +135,6 @@ namespace Diploma.Core.Migrations
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
-                    IsOrganizationOwner = table.Column<bool>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
@@ -207,6 +177,48 @@ namespace Diploma.Core.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IncomingSignatureRequests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    DocumentId = table.Column<int>(nullable: false),
+                    UserRequester = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncomingSignatureRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IncomingSignatureRequests_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SignatureWarrants",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    Expired = table.Column<DateTime>(nullable: false),
+                    ToUser = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SignatureWarrants", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SignatureWarrants_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -377,6 +389,16 @@ namespace Diploma.Core.Migrations
                 column: "UserFolderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_IncomingSignatureRequests_ApplicationUserId",
+                table: "IncomingSignatureRequests",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SignatureWarrants_ApplicationUserId",
+                table: "SignatureWarrants",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserFolders_ApplicationUserId",
                 table: "UserFolders",
                 column: "ApplicationUserId");
@@ -430,7 +452,7 @@ namespace Diploma.Core.Migrations
                 name: "DocumentFolders");
 
             migrationBuilder.DropTable(
-                name: "SignatureRequests");
+                name: "IncomingSignatureRequests");
 
             migrationBuilder.DropTable(
                 name: "SignatureWarrants");

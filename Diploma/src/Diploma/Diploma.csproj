@@ -23,6 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="wwwroot\js\bootstrap-datetimepicker.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*;Views\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
@@ -79,6 +84,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Document\" />
     <Folder Include="Views\UserTask\" />
   </ItemGroup>
 

@@ -42,7 +42,7 @@ namespace Diploma.Services
                 .Select(x => x.Email)
                 .ToList();
 
-            var tasks = _taskRepository.FindBy(x => organizationsUsers.Contains(x.AssignedTo));
+            var tasks = _taskRepository.FindBy(x => organizationsUsers.Contains(x.Creator));
 
             return tasks;
         }

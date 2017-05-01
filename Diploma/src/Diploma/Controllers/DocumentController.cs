@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
@@ -23,6 +24,8 @@ namespace Diploma.Controllers
 
         private readonly DocumentSignService _documentSignService = new DocumentSignService();
 
+        private readonly SearchService _searchService;
+
         private readonly UserService _userService;
 
         public DocumentController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -30,6 +33,7 @@ namespace Diploma.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _userService = new UserService(userManager, roleManager);
+            _searchService = new SearchService(userManager);
         }
 
         [HttpPost]
@@ -53,46 +57,25 @@ namespace Diploma.Controllers
             var result = await _documentService.DownloadFile(id, user);
 
             return result;
-        }
-
-        public async Task<IActionResult> DocumentDetails(int id)
-        {
-            var document = await _documentService.Get(_userService.GetUserByEmail(User.Identity.Name), id);
-
-            document.Size /= 1024;
-
-            document.Size = Math.Ceiling(document.Size);
-
-            return View(document);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> DocumentManage(int id)
-        {
-            var document = await _documentService.Get(_userService.GetUserByEmail(User.Identity.Name), id);
-
-            return View(new DocumentManageModel
-            {
-                Id = document.Id,
-                DocumentName = document.DocumentName,
-                Version = document.Version,
-                UsersWithAccess = document.DocumentAccesses.Select(x => x.User)
-            });
-        }
+        }        
 
         [HttpPost]
-        public async Task<IActionResult> DocumentManage(DocumentManageModel document)
+        public JsonResult UserSearch([FromBody]SearchRequestModel model)
         {
-            var user = _userService.GetUserByEmail(document.NewAccessForUser);
+            var users = new List<ApplicationUser>();
 
-            if (user == null)
+            if (model.OnlyInOrganization)
             {
-                return View("Error", $"User with email '{document.NewAccessForUser}' is not found.");
+                var user = _userService.GetUserByEmail(User.Identity.Name);
+
+                users = _searchService.SearchUsers(model.Username, user.OrganizationId).ToList();
+            }
+            else
+            {
+                users = _searchService.SearchUsers(model.Username, null).ToList();
             }
 
-            await _documentService.AddAccessForUser(user, document.Id);
-
-            return RedirectToAction("DocumentManage", document.Id);
+            return Json(users.Select(x => new { label = x.Email }));
         }
 
         public async Task<IActionResult> SignDocument(int id)
@@ -108,6 +91,13 @@ namespace Diploma.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public class SearchRequestModel
+        {
+            public string Username { get; set; }
+
+            public bool OnlyInOrganization { get; set; }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Diploma.Core.Data
 
         public DbSet<UserKeys> UserKeys { get; set; }
 
-        public DbSet<SignatureRequest> SignatureRequests { get; set; }
+        public DbSet<IncomingSignatureRequest> IncomingSignatureRequests { get; set; }
 
         public DbSet<AuditEntry> AuditEntries { get; set; }
 

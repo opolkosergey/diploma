@@ -1,8 +1,6 @@
 @model IEnumerable<Diploma.Core.Models.UserTask>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="col-lg-9">
 <table class="table">
     <thead>
         <tr>
@@ -14,12 +12,6 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.SignatureRequired)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SignatureFromUser)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Creator)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.AssignedTo)
@@ -43,23 +35,34 @@
                 @Html.DisplayFor(modelItem => item.SignatureRequired)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SignatureFromUser)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Creator)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.AssignedTo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TaskStatus)
+                <select class="form-control" name="organization" style="display: inline;">
+                    @if (item.TaskStatus.ToString() == "InProgress")
+                    {
+                        <option value="InProgress" selected="selected">InProgress</option>
+                    }
+                    else
+                    {
+                        <option value="InProgress">InProgress</option>
+                    }
+                    @if (item.TaskStatus.ToString() == "Done")
+                    {
+                        <option value="Done" selected="selected">Done</option>
+                    }
+                    else
+                    {
+                        <option value="Done">Done</option>
+                    }
+                    
+                </select>
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <input type="submit" class="btn btn-sm btn-default" value="Update status" />
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

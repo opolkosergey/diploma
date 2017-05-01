@@ -64,16 +64,20 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control" name="role" style="display: inline;">
+                            <select class="form-control" name="organization" style="display: inline;">
+                                @if (string.IsNullOrEmpty(item.Organization))
+                                {
+                                    <option value="" selected="selected"></option>
+                                }
                                 @foreach (var org in ViewData["organizations"] as IEnumerable<string>)
                                 {
                                     if (item.Organization == org)
                                     {
-                                        <option value="organization" selected="selected">@org</option>
+                                        <option value="@org" selected="selected">@org</option>
                                     }
                                     else
                                     {
-                                        <option value="organization">@org</option>
+                                        <option value="@org">@org</option>
                                     }
                                 }
                             </select>

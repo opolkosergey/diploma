@@ -11,25 +11,25 @@ namespace Diploma.Repositories
     {
         private readonly ApplicationDbContext ctx = new ApplicationDbContext();
 
-        public async Task Create(SignatureWarrant signatureWarrant)
+        public async Task Create(IncomingSignatureRequest signatureRequest)
         {
-            ctx.SignatureWarrants.Add(signatureWarrant);
+            ctx.IncomingSignatureRequests.Add(signatureRequest);
 
             await ctx.SaveChangesAsync();
         }
 
-        public async Task DeleteSignatureWarrant(int signatureWarrantId)
+        public async Task DeleteSignatureRequest(int signatureWarrantId)
         {
-            var sw = await ctx.SignatureWarrants.SingleAsync(x => x.Id == signatureWarrantId);
+            var sw = await ctx.IncomingSignatureRequests.SingleAsync(x => x.Id == signatureWarrantId);
 
             ctx.Remove(sw);
 
             await ctx.SaveChangesAsync();
         }
 
-        public IEnumerable<SignatureRequest> GetAll()
+        public IEnumerable<IncomingSignatureRequest> GetAll()
         {
-            return ctx.SignatureRequests.ToList();
+            return ctx.IncomingSignatureRequests.ToList();
         }
     }
 }

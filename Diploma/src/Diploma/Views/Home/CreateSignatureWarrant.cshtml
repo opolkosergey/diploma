@@ -1,0 +1,43 @@
+@model Diploma.Core.Models.SignatureWarrant
+
+<div class="col-lg-9">
+<form asp-action="CreateSignatureWarrant">
+    <div class="form-horizontal">
+        <h4>Create signature warrant</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="form-group">
+            <label asp-for="Expired" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <div id="datetimepicker6" class="input-group date" style="width: 280px">
+                    <input asp-for="Expired" class="form-control" data-format="dd/MM/yyyy" type="text" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <span asp-validation-for="Expired" class="text-danger"></span>
+            </div>
+        </div>  
+        
+        <div class="form-group">
+            <label asp-for="ToUser" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ToUser" class="form-control" id="organizationusers"/>
+                <span asp-validation-for="ToUser" class="text-danger"></span>
+            </div>
+        </div> 
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back</a>
+</div>
+
+</div>

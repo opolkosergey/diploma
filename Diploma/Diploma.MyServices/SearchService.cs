@@ -2,16 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Binbin.Linq;
 using Diploma.Core.Models;
 using Diploma.Repositories;
-using Diploma.Repositories.Abstracts;
-using Binbin.Linq;
+using Microsoft.AspNetCore.Identity;
 
-namespace Diploma.Filters
+namespace Diploma.Services
 {
     public class SearchService
     {
         private readonly DocumentRepository documentRepository = new DocumentRepository();
+
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public SearchService(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public IEnumerable<Document> SearchDocuments(string searchString)
         {
@@ -34,6 +41,19 @@ namespace Diploma.Filters
             var predicate = expression.Compile();
 
             return documentRepository.FindBy(predicate);
+        }
+
+        public IEnumerable<ApplicationUser> SearchUsers(string s, int? organizationId)
+        {
+            if (organizationId.HasValue)
+            {
+                var users = _userManager.Users.Where(x => x.Email.Contains(s)
+                                                     && x.OrganizationId.HasValue &&
+                                                     x.OrganizationId.Value == organizationId.Value);
+                return users;
+            }
+
+            return _userManager.Users.Where(x => x.Email.Contains(s));                        
         }
 
         private string GetOperator(string str)

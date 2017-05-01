@@ -1437,7 +1437,7 @@
     "system.data.common/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-lm6E3T5u7BOuEH0u18JpbJHxBfOJPuCyl4Kg1RH10ktYLp5uEEE1xKrHW56/We4SnZpGAuCc9N0MJpSDhTHZGQ==",
+      "sha512": "sha512-u2cqoMK31Ge/uaPrx5hflLWKQchzONeHeQHzsF6vQfoyYlhpy0Q//IBnCp/fX0h5oxUpT5aePWcIjLg+8j4LSA==",
       "path": "system.data.common/4.3.0",
       "hashPath": "system.data.common.4.3.0.nupkg.sha512"
     },
@@ -1689,7 +1689,7 @@
     "system.runtime.serialization.primitives/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "sha512": "sha512-1o1kmboOiRAUqdkOGSH1XGq+jdlN2FvKSvPHaXUG9AXIml03p6y+qS1ltEb2IEcsv0L9rdOQWq5W7whc+Ubx+A==",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "hashPath": "system.runtime.serialization.primitives.4.3.0.nupkg.sha512"
     },

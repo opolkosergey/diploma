@@ -13,31 +13,55 @@
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.DocumentName)
-                </dd>            
+                </dd>
                 <dt>
                     @Html.DisplayNameFor(model => model.Version)
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.Version)
-                </dd>    
-                <dt>
+                </dd>
+                <dt style="width: 200px">
                     Following users have access:
-                </dt>  
-                <dd>
+                    <br/>
                     @foreach (var user in Model.UsersWithAccess)
                     {
-                        <h4>@user</h4>
+                        <p>@user</p>
                     }
-                </dd> 
+                </dt>
+                <dd>                    
+                </dd>
             </dl>
-        
+
             <div class="form-group">
                 <label asp-for="NewAccessForUser" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
-                    <input asp-for="NewAccessForUser" class="form-control" />
+                    <input asp-for="NewAccessForUser" id="allusers" class="form-control" />
                     <span asp-validation-for="NewAccessForUser" class="text-danger"></span>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label asp-for="RequestSignature">
+                            <input asp-for="RequestSignature" />
+                            @Html.DisplayNameFor(m => m.RequestSignature)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            @*@using (Html.BeginForm("DocumentManage", "Document", FormMethod.Post))
+            {*@
+                @*<input type="text" id="txtCustomer" name="NewAccessForUser"/>*@
+                @*<input type="hidden" id="hfCustomer" name="CustomerId"/>
+                <br/><br />
+                <input type="submit" id="btnSubmit" value="Submit"/>
+                <br/><br/>
+                @ViewBag.Message
+            }*@
+            
+            
 
             @*<div class="form-group">
                 <label asp-for="UserFolderId" class="control-label col-md-2"></label>
@@ -56,5 +80,6 @@
 
     <div>
         <a asp-action="Index">Back to List</a>
-    </div>    
+    </div>
 </div>
+

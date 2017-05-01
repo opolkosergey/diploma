@@ -52,14 +52,17 @@ namespace Diploma.Services
 
             var newRole = _roleManager.Roles.Single(x => x.Name == role);
 
-            user.Roles.Clear();
-            user.Roles.Add(new IdentityUserRole<string>
+            if (!user.Roles.Any(x => x.RoleId == newRole.Id))
             {
-                RoleId = newRole.Id
-            });
-
+                user.Roles.Clear();
+                user.Roles.Add(new IdentityUserRole<string>
+                {
+                    RoleId = newRole.Id
+                });
+            }            
+           
             user.OrganizationId = organization.Id;
-            user.Organization = organization;            
+            //user.Organization = organization;            
 
             await _userManager.UpdateAsync(user);
         }
