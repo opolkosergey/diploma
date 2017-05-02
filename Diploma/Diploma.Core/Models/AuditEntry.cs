@@ -11,5 +11,7 @@ namespace Diploma.Core.Models
         public string Details { get; set; }
 
         public DateTime DateTime { get; set; }
+
+        public LogLevel LogLevel { get; set; }
     }
 }

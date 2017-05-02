@@ -18,6 +18,10 @@ namespace Diploma.Services.Abstracts
 
         Task AddAccessForUser(ApplicationUser user, int documentId);
 
+        Task UpdateUserAccesses(ApplicationUser user);
+
+        Task CreateNewFolder(UserFolder userFolder, ApplicationUser user);
+
         Task<FileContentResult> DownloadFile(int id, ApplicationUser user);
     }
 }

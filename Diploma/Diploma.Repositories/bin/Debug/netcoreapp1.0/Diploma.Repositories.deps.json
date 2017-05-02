@@ -878,7 +878,7 @@
     "microsoft.aspnetcore.jsonpatch/1.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-TFhm3NMZTvm8JmZ3yTwSlbVBaLBcSFqVlJn8WxC6voGcTb12TOVKWAHL0K5eHoYKEvUhKUvrP1ugeFua39Xueg==",
+      "sha512": "sha512-WVaSVS+dDlWCR/qerHnBxU9tIeJ9GMA3M5tg4cxH7/cJYZZLnr2zvaFHGB+cRRNCKKTJ0pFRxT7ES8knhgAAaA==",
       "path": "microsoft.aspnetcore.jsonpatch/1.0.0",
       "hashPath": "microsoft.aspnetcore.jsonpatch.1.0.0.nupkg.sha512"
     },
@@ -1158,7 +1158,7 @@
     "microsoft.extensions.platformabstractions/1.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-+SMcyAqMVmGIP/nOLyVLOhnYVJNawYSm5ZogbZ+kA34eDuPdlunds4bLvT5wiiHm+El+aZr8OSGE6u4d245u+w==",
+      "sha512": "sha512-zyjUzrOmuevOAJpIo3Mt5GmpALVYCVdLZ99keMbmCxxgQH7oxzU58kGHzE6hAgYEiWsdfMJLjVR7r+vSmaJmtg==",
       "path": "microsoft.extensions.platformabstractions/1.0.0",
       "hashPath": "microsoft.extensions.platformabstractions.1.0.0.nupkg.sha512"
     },

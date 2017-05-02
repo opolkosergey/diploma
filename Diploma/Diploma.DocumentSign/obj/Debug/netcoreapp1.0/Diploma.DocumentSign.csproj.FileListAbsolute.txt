@@ -16,3 +16,9 @@ C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\o
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.AssemblyInfo.cs
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.pdb
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.EmailSender.dll
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Repositories.dll
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Services.dll
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.EmailSender.pdb
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Services.pdb
+C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Repositories.pdb

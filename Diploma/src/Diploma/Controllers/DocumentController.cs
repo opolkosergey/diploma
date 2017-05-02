@@ -15,11 +15,7 @@ namespace Diploma.Controllers
 {
     public class DocumentController : Controller
     {
-        private UserManager<ApplicationUser> _userManager;
-
-        private readonly RoleManager<IdentityRole> _roleManager;
-
-        private readonly DocumentService _documentService = new DocumentService();
+        private readonly DocumentService _documentService;
 
         private readonly DocumentSignService _documentSignService = new DocumentSignService();
 
@@ -29,10 +25,9 @@ namespace Diploma.Controllers
 
         public DocumentController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
             _userService = new UserService(userManager, roleManager);
             _searchService = new SearchService(userManager);
+            _documentService = new DocumentService(userManager);
         }
 
         [HttpPost]
@@ -83,7 +78,7 @@ namespace Diploma.Controllers
 
             var document = await _documentService.Get(user, id);
 
-            if (_documentSignService.SignData(document, user))
+            if (await _documentSignService.SignDocument(document, user))
             {
                 await _documentService.Update(document);
                 return RedirectToAction("Index", "Home");

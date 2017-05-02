@@ -22,7 +22,8 @@ namespace Diploma.Services
                 {
                     ApplicationUserId = warrantUser.Id,
                     DocumentId = request.DocumentId,
-                    UserRequester = request.UserRequester
+                    UserRequester = request.UserRequester,
+                    ClonnedUsingWarrant = true
                 });
             }
         }

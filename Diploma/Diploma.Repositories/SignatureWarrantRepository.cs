@@ -20,7 +20,10 @@ namespace Diploma.Repositories
 
         public IEnumerable<SignatureWarrant> GetUserSignatureWarrants(string userEmail)
         {
-            return ctx.SignatureWarrants.Where(x => x.ToUser == userEmail).ToList();
+            return ctx.SignatureWarrants
+                .Include(x => x.ApplicationUser)
+                .Where(x => x.ToUser == userEmail)
+                .ToList();
         }
     }
 }

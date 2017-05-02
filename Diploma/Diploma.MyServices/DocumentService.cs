@@ -6,6 +6,7 @@ using Diploma.Core.Models;
 using Diploma.Repositories;
 using Diploma.Services.Abstracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Services
@@ -13,6 +14,12 @@ namespace Diploma.Services
     public class DocumentService : IDocumentService
     {
         private readonly DocumentRepository _documentRepository = new DocumentRepository();
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public DocumentService(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public async Task Update(Document document)
         {
@@ -29,6 +36,42 @@ namespace Diploma.Services
             });
 
             await Update(document);
+        }
+
+        public async Task UpdateUserAccesses(ApplicationUser user)
+        {
+            var allDocuments = await _documentRepository.GetAll();
+
+            var userDocuments = allDocuments
+                .Where(x => x.DocumentAccesses.Any(a => a.User == user.Email))
+                .ToList();
+
+            foreach (var document in userDocuments)
+            {
+                var docAccess = document.DocumentAccesses.Single(x => x.User == user.Email);
+
+                document.DocumentAccesses.Remove(docAccess);
+
+                await _documentRepository.Update(document);
+            }
+
+            var usersFormNewOrganization = _userManager.Users
+                .Where(x => x.OrganizationId.HasValue && x.OrganizationId == user.OrganizationId)
+                .Select(u => u.Email)
+                .ToList();
+
+            var newDocumentsForUser = allDocuments.Where(x => x.DocumentAccesses.Any(u => usersFormNewOrganization.Contains(u.User)));
+            var documentsIds = newDocumentsForUser.Select(x => x.Id).Distinct();
+
+            foreach (var documentId in documentsIds)
+            {
+                await AddAccessForUser(user, documentId);
+            }
+        }
+
+        public async Task CreateNewFolder(UserFolder userFolder, ApplicationUser user)
+        {
+            await _documentRepository.Save(userFolder, user);
         }
 
         public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
@@ -111,7 +154,7 @@ namespace Diploma.Services
                 }
             );
 
-            await _documentRepository.Save(document, folder, user);
+            await _documentRepository.Save(folder, user);
         }
 
         private string ParseFileName(string fileName)

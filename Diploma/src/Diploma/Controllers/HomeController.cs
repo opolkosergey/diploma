@@ -19,16 +19,15 @@ namespace Diploma.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DocumentService _documentService = new DocumentService();
+        private readonly DocumentService _documentService;
         private readonly OrganizationService organizationService = new OrganizationService();
         private readonly UserTaskService _userTaskService;
         private readonly SignatureRequestRepository _signatureRequestRepository = new SignatureRequestRepository();
         private readonly SignatureRequestService _signatureRequestService = new SignatureRequestService();
         private readonly SignatureWarrantRepository _signatureWarrantService = new SignatureWarrantRepository();
-
-
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly UserService _userService;
+
+        private readonly UserManager<ApplicationUser> _userManager;        
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public HomeController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -37,6 +36,7 @@ namespace Diploma.Controllers
             _roleManager = roleManager;
             _userService = new UserService(userManager, roleManager);
             _userTaskService = new UserTaskService(userManager, roleManager);
+            _documentService = new DocumentService(_userManager);
         }
 
         [Authorize(Roles = "Administrator")]
@@ -45,6 +45,8 @@ namespace Diploma.Controllers
             var org = await organizationService.GetOrganizationByName(organization);
 
             await _userService.UpdateUserByAdmin(email, role, org);
+
+            await _documentService.UpdateUserAccesses(_userService.GetUserByEmail(email));
 
             return RedirectToAction("Users", "Home", new { forEdit = true });
         }
@@ -138,10 +140,6 @@ namespace Diploma.Controllers
             if (searchString != null)
             {
                 page = 1;
-            }
-            else
-            {
-                //searchString = currentFilter;
             }
 
             ViewData["CurrentFilter"] = searchString;
@@ -289,6 +287,24 @@ namespace Diploma.Controllers
             int pageSize = 10;            
 
             return View(PaginatedList<Document>.CreateAsync(documents, page ?? 1, pageSize));
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult CreateNewFolder()
+        {
+            AddUserFolderToResponse(User.Identity.Name);
+
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult CreateNewFolder(UserFolder folder)
+        {
+            AddUserFolderToResponse(User.Identity.Name);
+
+            return View();
         }
 
         [HttpGet]

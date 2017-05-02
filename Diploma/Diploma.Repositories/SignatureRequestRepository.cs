@@ -18,9 +18,9 @@ namespace Diploma.Repositories
             await ctx.SaveChangesAsync();
         }
 
-        public async Task DeleteSignatureRequest(int signatureWarrantId)
+        public async Task DeleteSignatureRequest(int signatureRequestId)
         {
-            var sw = await ctx.IncomingSignatureRequests.SingleAsync(x => x.Id == signatureWarrantId);
+            var sw = await ctx.IncomingSignatureRequests.SingleAsync(x => x.Id == signatureRequestId);
 
             ctx.Remove(sw);
 
@@ -29,7 +29,10 @@ namespace Diploma.Repositories
 
         public IEnumerable<IncomingSignatureRequest> GetAll()
         {
-            return ctx.IncomingSignatureRequests.ToList();
+            return ctx.IncomingSignatureRequests
+                .Include(x => x.ApplicationUser)
+                .ThenInclude(x => x.UserKeys)
+                .ToList();
         }
     }
 }

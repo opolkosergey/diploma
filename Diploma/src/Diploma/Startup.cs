@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Diploma.Services;
+using Diploma.Services.Abstracts;
 
 namespace Diploma
 {
@@ -53,6 +54,7 @@ namespace Diploma
             });
 
             services.AddTransient<IEmailNotificator, EmailNotificator>();
+            services.AddTransient<IAuditLogger, AuditLogger>();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
