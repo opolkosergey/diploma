@@ -32,5 +32,10 @@ namespace Diploma.Services
         {
             await _signatureRequestRepository.Create(signatureRequest);
         }
+
+        public async Task<IEnumerable<IncomingSignatureRequest>> GetSignatureRequestsForUser(ApplicationUser user)
+        {
+            return null;
+        }
     }
 }

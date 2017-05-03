@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Binbin.Linq;
 using Diploma.Core.Models;
 using Diploma.Repositories;
@@ -20,7 +21,7 @@ namespace Diploma.Services
             _userManager = userManager;
         }
 
-        public IEnumerable<Document> SearchDocuments(string searchString)
+        public async Task<IEnumerable<Document>> SearchDocuments(string searchString)
         {
             var queryParts = searchString.ToLower().Split(new[] { " and " }, StringSplitOptions.None).Select(x => x.Trim());
             var expressions = new List<Expression<Func<Document, bool>>>();
@@ -43,7 +44,7 @@ namespace Diploma.Services
             return documentRepository.FindBy(predicate);
         }
 
-        public IEnumerable<ApplicationUser> SearchUsers(string s, int? organizationId)
+        public async Task<IEnumerable<ApplicationUser>> SearchUsers(string s, int? organizationId)
         {
             if (organizationId.HasValue)
             {

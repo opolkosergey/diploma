@@ -78,7 +78,9 @@ namespace Diploma.Services
 
         public async Task CreateNewFolder(UserFolder userFolder, ApplicationUser user)
         {
-            await _documentRepository.Save(userFolder, user);
+            user.UserFolders.Add(userFolder);
+
+            await _documentRepository.SaveFolder(user);
         }
 
         public async Task<bool> UpdateDocumentLocation(int documentId, int newFolderId, ApplicationUser user)
@@ -93,7 +95,7 @@ namespace Diploma.Services
 
             folder.DocumentFolders.Remove(documentFolder);
 
-            await _documentRepository.Save(folder, user);
+            await _documentRepository.Update(folder, user);
 
             var newFolder = user.UserFolders.FirstOrDefault(x => x.Id == newFolderId);
 
@@ -109,7 +111,7 @@ namespace Diploma.Services
                 }
             );
 
-            await _documentRepository.Save(newFolder, user);
+            await _documentRepository.Update(newFolder, user);
 
             return true;
         }
@@ -142,13 +144,6 @@ namespace Diploma.Services
         public async Task<IEnumerable<Document>> GetAll()
         {
             return await _documentRepository.GetAll();
-        }
-
-        public async Task CreateFolder(UserFolder userFolder, ApplicationUser user)
-        {
-            user.UserFolders.Add(userFolder);
-
-            await _documentRepository.SaveFolder(user);
         }
 
         public async Task Save(IFormFile file, string folderName, ApplicationUser user)
@@ -201,7 +196,7 @@ namespace Diploma.Services
                 }
             );
 
-            await _documentRepository.Save(folder, user);
+            await _documentRepository.Update(folder, user);
         }
 
         private string ParseFileName(string fileName)

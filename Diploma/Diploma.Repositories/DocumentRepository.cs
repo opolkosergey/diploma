@@ -20,7 +20,7 @@ namespace Diploma.Repositories
                 .ToListAsync();
         }
 
-        public async Task Save(UserFolder documentFolder, ApplicationUser user)
+        public async Task Update(UserFolder documentFolder, ApplicationUser user)
         {           
             ctx.UserFolders.Update(documentFolder);
             ctx.Entry(user).State = EntityState.Unchanged;
