@@ -13,26 +13,19 @@ namespace Diploma.Pagging
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            TotalPages = CalculateTotalPages(count, pageSize);
 
             this.AddRange(items);
         }
 
-        public bool HasPreviousPage
+        private int CalculateTotalPages(int count, int pageSize)
         {
-            get
-            {
-                return (PageIndex > 1);
-            }
+            return (int)Math.Ceiling(count / (double)pageSize);
         }
 
-        public bool HasNextPage
-        {
-            get
-            {
-                return (PageIndex < TotalPages);
-            }
-        }
+        public bool HasPreviousPage => (PageIndex > 1);
+
+        public bool HasNextPage => (PageIndex < TotalPages);
 
         public static PaginatedList<T> CreateAsync(IEnumerable<T> source, int pageIndex, int pageSize)
         {

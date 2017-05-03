@@ -21,10 +21,9 @@ namespace Diploma.Controllers
     {
         private readonly DocumentService _documentService;
         private readonly OrganizationService organizationService = new OrganizationService();
-        private readonly UserTaskService _userTaskService;
-        private readonly SignatureRequestRepository _signatureRequestRepository = new SignatureRequestRepository();
         private readonly SignatureRequestService _signatureRequestService = new SignatureRequestService();
-        private readonly SignatureWarrantRepository _signatureWarrantService = new SignatureWarrantRepository();
+        private readonly UserTaskService _userTaskService;
+        
         private readonly UserService _userService;
 
         private readonly UserManager<ApplicationUser> _userManager;        
@@ -68,6 +67,15 @@ namespace Diploma.Controllers
             AddUserFolderToResponse(User.Identity.Name);
 
             return View(PaginatedList<AdminUserModel>.CreateAsync(users.ToList(),  1, 10));
+        }
+
+        public async Task<IActionResult> UpdateDocumentInFolder(int documentId, int newFolderId)
+        {
+            var user = _userService.GetUserByEmail(User.Identity.Name);
+
+            await _documentService.UpdateDocumentLocation(documentId, newFolderId, user);
+
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> DocumentDetails(int id)
@@ -115,7 +123,7 @@ namespace Diploma.Controllers
             {
                 var targetUser = _userService.GetUserByEmail(documentModel.NewAccessForUser);
 
-                await _signatureRequestRepository.Create(new IncomingSignatureRequest
+                await _signatureRequestService.CreateSignatureRequest(new IncomingSignatureRequest
                 {
                     DocumentId = documentModel.Id,
                     UserRequester = User.Identity.Name,
@@ -147,107 +155,7 @@ namespace Diploma.Controllers
             List<Document> documents;
             if (loginAsAnonimous)
             {
-                documents = new List<Document>
-                {
-                    new Document
-                    {
-                        DocumentName = "Example document",
-                        Version = "1",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document",
-                        Version = "2",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document",
-                        Version = "1",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document1",
-                        Version = "1",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document1",
-                        Version = "2",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document1",
-                        Version = "3",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document2",
-                        Version = "1",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document2",
-                        Version = "2",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document2",
-                        Version = "3",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document2",
-                        Version = "4",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document3",
-                        Version = "1",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document3",
-                        Version = "2",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document3",
-                        Version = "3",
-                        UploadedDate = DateTime.Now
-                    },
-                    new Document
-                    {
-                        DocumentName = "Example document3",
-                        Version = "4",
-                        Signature = "jisogj9reugr09u5y4ih90g",
-                        SignedByUser = "Example user",
-                        UploadedDate = DateTime.Now
-                    }
-                };
+                documents = FictitiousDataGenerator.GeneratDocuments();
             }
             else
             {
@@ -309,6 +217,24 @@ namespace Diploma.Controllers
 
         [HttpGet]
         [Authorize]
+        public async Task<IActionResult> GetFolderContent(int folderId)
+        {
+            AddUserFolderToResponse(User.Identity.Name);
+
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetSignatureRequests()
+        {
+            AddUserFolderToResponse(User.Identity.Name);
+
+            return View();
+        }
+
+        [HttpGet]
+        [Authorize]
         public IActionResult CreateSignatureWarrant()
         {
             AddUserFolderToResponse(User.Identity.Name);
@@ -323,7 +249,7 @@ namespace Diploma.Controllers
             var user = _userService.GetUserByEmail(User.Identity.Name);
             signatureWarrant.ApplicationUserId = user.Id;
 
-            await _signatureWarrantService.CreateSignatureWarrant(signatureWarrant);
+            await _documentService.CreateSignatureWarrant(signatureWarrant);
 
             var warrantUser = _userService.GetUserByEmail(signatureWarrant.ToUser);
 
@@ -391,7 +317,9 @@ namespace Diploma.Controllers
 
         public IActionResult Error()
         {
-            return View();
+            object message = "Unknown error occured.";
+
+            return View(message);
         }
     }
 }

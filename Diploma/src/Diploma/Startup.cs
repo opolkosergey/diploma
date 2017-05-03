@@ -81,7 +81,7 @@ namespace Diploma
             app.UseStaticFiles();
 
             app.UseIdentity();
-            RolesData.SeedRoles(app.ApplicationServices).Wait();
+            RolesInitializer.InitializeRoles(app.ApplicationServices).Wait();
             // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>

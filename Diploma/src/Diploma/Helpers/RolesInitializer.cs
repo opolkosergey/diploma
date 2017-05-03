@@ -10,11 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Diploma.Helpers
 {
-    public static class RolesData
+    public static class RolesInitializer
     {
         private static readonly string[] Roles = new string[] { "Administrator", "OrganizationOwner", "OrganizationLead", "Employee" };
 
-        public static async Task SeedRoles(IServiceProvider serviceProvider)
+        public static async Task InitializeRoles(IServiceProvider serviceProvider)
         {
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
@@ -32,7 +32,6 @@ namespace Diploma.Helpers
                         }
                     }
                 }
-
             }
         }
     }

@@ -27,5 +27,10 @@ namespace Diploma.Services
                 });
             }
         }
+
+        public async Task CreateSignatureRequest(IncomingSignatureRequest signatureRequest)
+        {
+            await _signatureRequestRepository.Create(signatureRequest);
+        }
     }
 }

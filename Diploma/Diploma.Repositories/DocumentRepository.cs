@@ -34,6 +34,14 @@ namespace Diploma.Repositories
             await ctx.SaveChangesAsync();
         }
 
+        public async Task SaveFolder(ApplicationUser user)
+        {
+            ctx.Entry(user).State = EntityState.Unchanged;
+            ctx.Entry(user.Roles.First()).State = EntityState.Unchanged;
+
+            await ctx.SaveChangesAsync();
+        }
+
         public async Task Update(Document document)
         {
             ctx.Entry(document).State = EntityState.Modified;

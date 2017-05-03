@@ -40,8 +40,6 @@ namespace Diploma.Core.Data
         {
             builder.Entity<ApplicationUser>().HasMany(x => x.UserFolders).WithOne(x => x.ApplicationUser).HasForeignKey(x => x.ApplicationUserId);
 
-            //builder.Entity<ApplicationUser>().HasOne(x => x.UserKeys).WithOne(x => x.ApplicationUser);
-
             builder.Entity<DocumentFolder>().HasKey(e => new {e.DocumentId, e.UserFolderId});
 
             builder.Entity<DocumentFolder>()

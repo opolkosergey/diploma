@@ -14,6 +14,8 @@ namespace Diploma.Services
     public class DocumentService : IDocumentService
     {
         private readonly DocumentRepository _documentRepository = new DocumentRepository();
+        private readonly SignatureWarrantRepository _signatureWarrantRepository = new SignatureWarrantRepository();
+
         private readonly UserManager<ApplicationUser> _userManager;
 
         public DocumentService(UserManager<ApplicationUser> userManager)
@@ -36,6 +38,11 @@ namespace Diploma.Services
             });
 
             await Update(document);
+        }
+
+        public async Task CreateSignatureWarrant(SignatureWarrant signatureWarrant)
+        {
+            await _signatureWarrantRepository.CreateSignatureWarrant(signatureWarrant);
         }
 
         public async Task UpdateUserAccesses(ApplicationUser user)
@@ -74,6 +81,39 @@ namespace Diploma.Services
             await _documentRepository.Save(userFolder, user);
         }
 
+        public async Task<bool> UpdateDocumentLocation(int documentId, int newFolderId, ApplicationUser user)
+        {
+            var folder = user.UserFolders.FirstOrDefault(x => x.DocumentFolders.Any(d => d.DocumentId == documentId));
+            if (folder == null)
+            {
+                return false;
+            }
+
+            var documentFolder = folder.DocumentFolders.FirstOrDefault(d => d.DocumentId == documentId);
+
+            folder.DocumentFolders.Remove(documentFolder);
+
+            await _documentRepository.Save(folder, user);
+
+            var newFolder = user.UserFolders.FirstOrDefault(x => x.Id == newFolderId);
+
+            if (newFolder == null)
+            {
+                return false;
+            }
+
+            newFolder.DocumentFolders.Add(
+                new DocumentFolder
+                {
+                    DocumentId = documentId
+                }
+            );
+
+            await _documentRepository.Save(newFolder, user);
+
+            return true;
+        }
+
         public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
         {
             var document = await _documentRepository.Get(id);
@@ -102,6 +142,13 @@ namespace Diploma.Services
         public async Task<IEnumerable<Document>> GetAll()
         {
             return await _documentRepository.GetAll();
+        }
+
+        public async Task CreateFolder(UserFolder userFolder, ApplicationUser user)
+        {
+            user.UserFolders.Add(userFolder);
+
+            await _documentRepository.SaveFolder(user);
         }
 
         public async Task Save(IFormFile file, string folderName, ApplicationUser user)

@@ -3,7 +3,9 @@ using Diploma.Core.Models;
 using Diploma.EmailSender.Abstracts;
 using Diploma.EmailSender.Models;
 using Diploma.Services.Abstracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Internal;
 
 namespace Diploma.Filters
 {
@@ -33,6 +35,8 @@ namespace Diploma.Filters
                 Subject = "System response exception.",
                 Body = context.Exception.ToString()
             });
+
+            context.Result = new RedirectToActionResult("Error", "Home", null);
         }
     }
 }
