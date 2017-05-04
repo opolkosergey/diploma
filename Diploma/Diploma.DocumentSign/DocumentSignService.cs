@@ -48,7 +48,7 @@ namespace Diploma.DocumentSign
                     await _emailNotificator.SendErrorReportToAdmin(new EventReportModel
                     {
                         Subject = "Document sign",
-                        Body = "Your all warrants were expire.",
+                        Body = "Your all warrants were expired.",
                         ToUser = user.Email                        
                     });
 
@@ -103,7 +103,7 @@ namespace Diploma.DocumentSign
                         ToUser = signatureRequest.UserRequester
                     });
                 }
-                catch (CryptographicException e)
+                catch (Exception e)
                 {
                     await _emailNotificator.SendErrorReportToAdmin(new ReportModel
                     {

@@ -166,7 +166,7 @@ namespace Diploma.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                documents = new SearchService(_userManager).SearchDocuments(searchString)
+                documents = (await new SearchService(_userManager).SearchDocuments(searchString))
                     .Where(x => x.DocumentAccesses.Any(u => u.User == User.Identity.Name))
                     .ToList();
             }

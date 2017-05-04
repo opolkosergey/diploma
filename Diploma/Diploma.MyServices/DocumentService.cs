@@ -118,7 +118,12 @@ namespace Diploma.Services
 
         public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
         {
-            var document = await _documentRepository.Get(id);
+            var document = await Get(user, id);
+
+            if (document == null)
+            {
+                return null;
+            }
 
             var result = new FileContentResult(document.Content, document.ContentType);
 
@@ -168,10 +173,6 @@ namespace Diploma.Services
             {
                 ContentType = file.ContentType,
                 DocumentName = documentName,
-                //UserFolders = new List<UserFolder>
-                //{
-                //    folder
-                //},
                 UploadedDate = DateTime.Now,
                 Version = await SetDocumentVersion(documentName),
                 Size = file.Length,
@@ -203,7 +204,7 @@ namespace Diploma.Services
         {
             var pointIndex = fileName.LastIndexOf('.');
 
-            var underscoreIndex = fileName.LastIndexOf('_');
+            var underscoreIndex = fileName.LastIndexOf("~~", StringComparison.OrdinalIgnoreCase);
 
             if (underscoreIndex != -1)
             {
@@ -250,7 +251,7 @@ namespace Diploma.Services
             {
                 var index = document.DocumentName.LastIndexOf('.');
             
-                var name = document.DocumentName.Insert(index, $"_{document.Version}");
+                var name = document.DocumentName.Insert(index, $"~~{document.Version}");
 
                 return name;
             }
