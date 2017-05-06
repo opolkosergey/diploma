@@ -68,18 +68,15 @@ namespace Diploma.DocumentSign
                 userKeys = user.UserKeys;
             }
 
-            byte[] signedBytes;
             using (var rsa = new RSACryptoServiceProvider())
             {
                 try
                 {
                     rsa.ImportParameters(ConvetToRsaParameters(userKeys));
-
-                    var sha1 = SHA1.Create();
                     
-                    byte[] hash = sha1.ComputeHash(document.Content);
+                    var hash = SHA1.Create().ComputeHash(document.Content);
                     
-                    signedBytes = rsa.SignHash(hash, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+                    var signedBytes = rsa.SignHash(hash, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
 
                     document.SignedByUser = $"{user.Email}{signDetails}";
                     document.Signature = Convert.ToBase64String(signedBytes);
