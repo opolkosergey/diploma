@@ -79,7 +79,7 @@ namespace Diploma.Core.Migrations
 
                     b.Property<string>("Details");
 
-                    b.Property<string>("Source");
+                    b.Property<int>("LogLevel");
 
                     b.HasKey("Id");
 
@@ -152,6 +152,8 @@ namespace Diploma.Core.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
+                    b.Property<bool>("ClonnedUsingWarrant");
+
                     b.Property<int>("DocumentId");
 
                     b.Property<string>("UserRequester");
@@ -188,7 +190,8 @@ namespace Diploma.Core.Migrations
 
                     b.Property<DateTime>("Expired");
 
-                    b.Property<string>("ToUser");
+                    b.Property<string>("ToUser")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

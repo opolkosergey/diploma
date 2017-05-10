@@ -204,7 +204,7 @@ namespace Diploma.Services
         {
             var pointIndex = fileName.LastIndexOf('.');
 
-            var underscoreIndex = fileName.LastIndexOf("~~", StringComparison.OrdinalIgnoreCase);
+            var underscoreIndex = fileName.LastIndexOf("--", StringComparison.OrdinalIgnoreCase);
 
             if (underscoreIndex != -1)
             {
@@ -251,7 +251,7 @@ namespace Diploma.Services
             {
                 var index = document.DocumentName.LastIndexOf('.');
             
-                var name = document.DocumentName.Insert(index, $"~~{document.Version}");
+                var name = document.DocumentName.Insert(index, $"--{document.Version}");
 
                 return name;
             }

@@ -136,7 +136,7 @@ namespace Diploma.Controllers
         }
 
         public async Task<IActionResult> Index(string sortOrder, /*string currentFilter,*/ string searchString, int? page, bool loginAsAnonimous)
-        {
+        {            
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
@@ -228,9 +228,10 @@ namespace Diploma.Controllers
         [Authorize]
         public async Task<IActionResult> GetSignatureRequests()
         {
+            var signatureRequests = await _signatureRequestService.GetSignatureRequestsForUser(_userService.GetUserByEmail(User.Identity.Name));
             AddUserFolderToResponse(User.Identity.Name);
 
-            return View();
+            return View(signatureRequests.ToList());
         }
 
         [HttpGet]

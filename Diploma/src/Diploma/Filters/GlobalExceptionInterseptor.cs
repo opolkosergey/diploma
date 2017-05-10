@@ -36,7 +36,7 @@ namespace Diploma.Filters
                 Body = context.Exception.ToString()
             });
 
-            context.Result = new RedirectToActionResult("Error", "Home", null);
+            context.Result = new RedirectToActionResult("Error", "Home", null, true);
         }
     }
 }

@@ -13,41 +13,41 @@ namespace Diploma.Helpers
                 new UserFolder
                 {
                     Name = "Uploaded",
-                    //Documents = new List<Document>
-                    //{
-                    //    new Document()
-                    //}
+                    DocumentFolders = new List<DocumentFolder>
+                    {
+                        new DocumentFolder()
+                    }
                 },
                 new UserFolder
                 {
                     Name = "My folder name 1",
-                    //Documents = new List<Document>
-                    //{
-                    //    new Document(),
-                    //    new Document()
-                    //}
+                    DocumentFolders = new List<DocumentFolder>
+                    {
+                        new DocumentFolder(),
+                        new DocumentFolder()
+                    }
                 },
                 new UserFolder
                 {
                     Name = "My folder name 2",
-                    //Documents = new List<Document>
-                    //{
-                    //    new Document(),
-                    //    new Document(),
-                    //    new Document(),
-                    //    new Document()
-                    //}
+                    DocumentFolders = new List<DocumentFolder>
+                    {
+                        new DocumentFolder(),
+                        new DocumentFolder(),
+                        new DocumentFolder(),
+                        new DocumentFolder()
+                    }
                 },
                 new UserFolder
                 {
                     Name = "My folder name 3",
-                    //Documents = new List<Document>
-                    //{
-                    //    new Document(),
-                    //    new Document(),
-                    //    new Document(),
-                    //    new Document()
-                    //}
+                    DocumentFolders = new List<DocumentFolder>
+                    {
+                        new DocumentFolder(),
+                        new DocumentFolder(),
+                        new DocumentFolder(),
+                        new DocumentFolder()
+                    }
                 }
             };
         }

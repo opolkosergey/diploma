@@ -35,7 +35,7 @@ namespace Diploma.Services
 
         public async Task<IEnumerable<IncomingSignatureRequest>> GetSignatureRequestsForUser(ApplicationUser user)
         {
-            return null;
+            return _signatureRequestRepository.GetAll().Where(x => x.ApplicationUserId == user.Id);
         }
     }
 }

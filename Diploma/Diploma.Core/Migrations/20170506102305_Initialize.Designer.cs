@@ -9,7 +9,7 @@ using Diploma.Core.Models;
 namespace Diploma.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170430153942_Initialize")]
+    [Migration("20170506102305_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,7 @@ namespace Diploma.Core.Migrations
 
                     b.Property<string>("Details");
 
-                    b.Property<string>("Source");
+                    b.Property<int>("LogLevel");
 
                     b.HasKey("Id");
 
@@ -153,6 +153,8 @@ namespace Diploma.Core.Migrations
 
                     b.Property<string>("ApplicationUserId");
 
+                    b.Property<bool>("ClonnedUsingWarrant");
+
                     b.Property<int>("DocumentId");
 
                     b.Property<string>("UserRequester");
@@ -189,7 +191,8 @@ namespace Diploma.Core.Migrations
 
                     b.Property<DateTime>("Expired");
 
-                    b.Property<string>("ToUser");
+                    b.Property<string>("ToUser")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

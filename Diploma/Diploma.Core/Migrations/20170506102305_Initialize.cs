@@ -17,7 +17,7 @@ namespace Diploma.Core.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateTime = table.Column<DateTime>(nullable: false),
                     Details = table.Column<string>(nullable: true),
-                    Source = table.Column<string>(nullable: true)
+                    LogLevel = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,6 +186,7 @@ namespace Diploma.Core.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
+                    ClonnedUsingWarrant = table.Column<bool>(nullable: false),
                     DocumentId = table.Column<int>(nullable: false),
                     UserRequester = table.Column<string>(nullable: true)
                 },
@@ -208,7 +209,7 @@ namespace Diploma.Core.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: true),
                     Expired = table.Column<DateTime>(nullable: false),
-                    ToUser = table.Column<string>(nullable: true)
+                    ToUser = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

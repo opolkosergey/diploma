@@ -1,0 +1,29 @@
+﻿@model List<Diploma.Core.Models.IncomingSignatureRequest>
+
+<div class="col-lg-9">
+    <table class="table">
+        <thead>
+        <tr>    
+            <th>Title</th>
+            <th>Download</th>
+            <th>Signature</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    Soderzanie.doc
+                </td>
+                <td>
+                    <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="@item.DocumentId"><i class="fa fa-download"></i></a>
+                </td>
+                <td>
+                    <a asp-action="SignDocument" asp-controller="Document" asp-route-id="@item.DocumentId">Sign</a>
+                </td>              
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

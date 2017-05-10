@@ -41,16 +41,17 @@ namespace Diploma.Controllers
                 return View("Error", "There are no file to save. Please select file and try again.");
             }
 
-            if (file.ContentType != "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+                || file.ContentType == "application/msword")
             {
-                return View("Error", "Invalid content type.");
+                var user = _userService.GetUserByEmail(User.Identity.Name);
+
+                await _documentService.Save(file, folderName, user);
+
+                return RedirectToAction("Index", "Home");                
             }
 
-            var user = _userService.GetUserByEmail(User.Identity.Name);
-
-            await _documentService.Save(file, folderName, user);
-
-            return RedirectToAction("Index", "Home");
+            return View("Error", "Invalid content type.");
         }
 
         [HttpGet]
