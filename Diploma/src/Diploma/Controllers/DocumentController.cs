@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Services;
+using Diploma.Core.Services;
+using Diploma.DocumentSign;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Diploma.DocumentSign;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
@@ -16,18 +16,22 @@ namespace Diploma.Controllers
     public class DocumentController : Controller
     {
         private readonly DocumentService _documentService;
-
-        private readonly DocumentSignService _documentSignService = new DocumentSignService();
-
+        private readonly DocumentSignService _documentSignService;
         private readonly SearchService _searchService;
-
         private readonly UserService _userService;
 
-        public DocumentController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public DocumentController(
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            DocumentSignService documentSignService, 
+            SearchService searchService, 
+            UserService userService, 
+            DocumentService documentService)
         {
-            _userService = new UserService(userManager, roleManager);
-            _searchService = new SearchService(userManager);
-            _documentService = new DocumentService(userManager);
+            _documentSignService = documentSignService;
+            _searchService = searchService;
+            _userService = userService;
+            _documentService = documentService;
         }
 
         [HttpPost]

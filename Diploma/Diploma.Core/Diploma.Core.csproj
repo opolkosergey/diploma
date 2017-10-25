@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Binbin.Linq.PredicateBuilder" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.3" />
@@ -13,6 +14,10 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Diploma.EmailSender\Diploma.EmailSender.csproj" />
   </ItemGroup>
 
 </Project>

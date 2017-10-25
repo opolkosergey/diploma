@@ -1,11 +1,10 @@
 ﻿using System;
 using Diploma.Core.Models;
+using Diploma.Core.Services;
 using Diploma.EmailSender.Abstracts;
 using Diploma.EmailSender.Models;
-using Diploma.Services.Abstracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Internal;
 
 namespace Diploma.Filters
 {
@@ -13,11 +12,11 @@ namespace Diploma.Filters
     {
         private readonly IEmailNotificator _emailNotificator;
 
-        private readonly IAuditLogger _logger;
+        private readonly AuditLogger _logger;
 
-        public GlobalExceptionInterseptor(IEmailNotificator _emailNotificator, IAuditLogger logger)
+        public GlobalExceptionInterseptor(IEmailNotificator emailNotificator, AuditLogger logger)
         {
-            this._emailNotificator = _emailNotificator;
+            _emailNotificator = emailNotificator;
             _logger = logger;
         }
 
@@ -36,7 +35,7 @@ namespace Diploma.Filters
                 Body = context.Exception.ToString()
             });
 
-            context.Result = new RedirectToActionResult("Error", "Home", null, true);
+            //context.Result = new RedirectToActionResult("Error", "Home", null, true);
         }
     }
 }

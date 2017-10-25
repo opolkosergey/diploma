@@ -7,15 +7,15 @@ namespace Diploma.Pagging
 {
     public class PaginatedList<T> : List<T>
     {
-        public int PageIndex { get; private set; }
-        public int TotalPages { get; private set; }
+        public int PageIndex { get; }
+        public int TotalPages { get; }
 
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
             PageIndex = pageIndex;
             TotalPages = CalculateTotalPages(count, pageSize);
 
-            this.AddRange(items);
+            AddRange(items);
         }
 
         private int CalculateTotalPages(int count, int pageSize)

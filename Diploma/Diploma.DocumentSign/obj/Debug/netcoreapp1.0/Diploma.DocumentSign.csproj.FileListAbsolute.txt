@@ -22,3 +22,14 @@ C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diplo
 C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.EmailSender.pdb
 C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Services.pdb
 C:\Repository\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Repositories.pdb
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.DocumentSign.deps.json
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.DocumentSign.dll
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.DocumentSign.pdb
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Core.dll
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.EmailSender.dll
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.Core.pdb
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\bin\Debug\netcoreapp1.0\Diploma.EmailSender.pdb
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.csprojResolveAssemblyReference.cache
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.AssemblyInfo.cs
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.dll
+D:\Repositories\diploma\Diploma\Diploma.DocumentSign\obj\Debug\netcoreapp1.0\Diploma.DocumentSign.pdb

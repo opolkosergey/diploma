@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Filters;
+using Diploma.Core.Services;
 using Diploma.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.Pagging;
-using Diploma.Repositories;
-using Diploma.Services;
 using Diploma.ViewModels;
 using Diploma.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -20,28 +18,39 @@ namespace Diploma.Controllers
     public class HomeController : Controller
     {
         private readonly DocumentService _documentService;
-        private readonly OrganizationService organizationService = new OrganizationService();
-        private readonly SignatureRequestService _signatureRequestService = new SignatureRequestService();
-        private readonly UserTaskService _userTaskService;
-        
+        private readonly OrganizationService _organizationService;
+        private readonly SignatureRequestService _signatureRequestService;
+        private readonly UserTaskService _userTaskService;        
         private readonly UserService _userService;
+        private readonly SearchService _searchService;
 
         private readonly UserManager<ApplicationUser> _userManager;        
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public HomeController(
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            DocumentService documentService, 
+            OrganizationService organizationService, 
+            UserTaskService userTaskService, 
+            UserService userService, 
+            SignatureRequestService signatureRequestService, 
+            SearchService searchService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _userService = new UserService(userManager, roleManager);
-            _userTaskService = new UserTaskService(userManager, roleManager);
-            _documentService = new DocumentService(_userManager);
+            _documentService = documentService;
+            _organizationService = organizationService;
+            _userTaskService = userTaskService;
+            _userService = userService;
+            _signatureRequestService = signatureRequestService;
+            _searchService = searchService;
         }
 
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> UpdateUser(string email, string role, string organization)
         {
-            var org = await organizationService.GetOrganizationByName(organization);
+            var org = _organizationService.GetOrganizationByName(organization);
 
             await _userService.UpdateUserByAdmin(email, role, org);
 
@@ -62,7 +71,7 @@ namespace Diploma.Controllers
                 Role = _roleManager.Roles.First(x => x.Id == user.Roles.First().RoleId).Name
             });//.Where(u => u.Role != "Administrator");
 
-            ViewData["organizations"] = (await organizationService.GetAll()).Select(x => x.Name);
+            ViewData["organizations"] = (await _organizationService.GetAll()).Select(x => x.Name);
 
             AddUserFolderToResponse(User.Identity.Name);
 
@@ -132,11 +141,12 @@ namespace Diploma.Controllers
             }
 
             AddUserFolderToResponse(User.Identity.Name);
+
             return RedirectToAction("DocumentManage", documentModel.Id);
         }
 
-        public async Task<IActionResult> Index(string sortOrder, /*string currentFilter,*/ string searchString, int? page, bool loginAsAnonimous)
-        {            
+        public async Task<IActionResult> Index(string sortOrder, string searchString, int? page, bool loginAsAnonimous)
+        {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
@@ -166,7 +176,7 @@ namespace Diploma.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                documents = (await new SearchService(_userManager).SearchDocuments(searchString))
+                documents = (await _searchService.SearchDocuments(searchString))
                     .Where(x => x.DocumentAccesses.Any(u => u.User == User.Identity.Name))
                     .ToList();
             }
@@ -192,6 +202,7 @@ namespace Diploma.Controllers
                     documents = documents.OrderBy(s => s.DocumentName).ToList();
                     break;
             }
+
             int pageSize = 10;            
 
             return View(PaginatedList<Document>.CreateAsync(documents, page ?? 1, pageSize));
@@ -248,6 +259,7 @@ namespace Diploma.Controllers
         public async Task<IActionResult> CreateSignatureWarrant(SignatureWarrant signatureWarrant)
         {
             var user = _userService.GetUserByEmail(User.Identity.Name);
+
             signatureWarrant.ApplicationUserId = user.Id;
 
             await _documentService.CreateSignatureWarrant(signatureWarrant);
@@ -257,6 +269,7 @@ namespace Diploma.Controllers
             await _signatureRequestService.CloneSignatureRequests(user, warrantUser);
 
             AddUserFolderToResponse(User.Identity.Name);
+
             return RedirectToAction("Index");
         }
 
@@ -316,6 +329,7 @@ namespace Diploma.Controllers
             }
         }
 
+        [Route("/Home/Error")]
         public IActionResult Error()
         {
             object message = "Unknown error occured.";

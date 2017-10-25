@@ -1,7 +1,12 @@
 ﻿using Diploma.Core.Data;
 using Diploma.Core.Models;
+using Diploma.Core.Repositories;
+using Diploma.Core.Repositories.Abstracts.Base;
+using Diploma.Core.Services;
+using Diploma.DocumentSign;
 using Diploma.EmailSender;
 using Diploma.EmailSender.Abstracts;
+using Diploma.EmailSender.Models;
 using Diploma.Filters;
 using Diploma.Helpers;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Diploma.Services;
-using Diploma.Services.Abstracts;
 
 namespace Diploma
 {
@@ -23,7 +27,8 @@ namespace Diploma
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("Configurations/EmailNotificatorConfiguration.json", optional: false, reloadOnChange: true);
 
             if (env.IsDevelopment())
             {
@@ -53,17 +58,41 @@ namespace Diploma
                 options.Filters.Add(typeof(GlobalExceptionInterseptor));
             });
 
+            services.AddOptions();
+            services.Configure<EmailSenderOptions>(Configuration.GetSection("NotificatorConfiguration"));
+
             services.AddTransient<IEmailNotificator, EmailNotificator>();
-            services.AddTransient<IAuditLogger, AuditLogger>();
+            services.AddTransient<AuditLogger>();
+
+            services.AddTransient<DocumentService>();
+            services.AddTransient<DocumentSignService>();
+            services.AddTransient<OrganizationService>();
+            services.AddTransient<SearchService>();
+            services.AddTransient<SignatureRequestService>();
+            services.AddTransient<UserTaskService>();
+            services.AddTransient<UserService>();
+
+            services.AddTransient<BaseRepository<Document>, DocumentRepository>();            
+            services.AddTransient<BaseRepository<IncomingSignatureRequest>, SignatureRequestRepository>();
+            services.AddTransient<BaseRepository<Organization>, OrganizationRepository>();
+            services.AddTransient<BaseRepository<SignatureWarrant>, SignatureWarrantRepository>();
+            services.AddTransient<BaseRepository<UserFolder>, UserFolderRepository>();
+            services.AddTransient<BaseRepository<UserTask>, TaskRepository>();            
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
+            }
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

@@ -1,0 +1,9 @@
+﻿{
+  "NotificatorConfiguration": {
+    "From": "diploma-support@yandex.ru",
+    "Password": "123qweas",
+    "To": "opolkosergey@gmail.com",
+    "Host": "smtp.yandex.ru",
+    "Port": 465
+  }
+}

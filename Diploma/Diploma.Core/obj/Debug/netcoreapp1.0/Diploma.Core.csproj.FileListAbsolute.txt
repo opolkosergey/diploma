@@ -12,3 +12,12 @@ C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.AssemblyInfo.cs
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.dll
 C:\Users\Sergey\Documents\Диплом\v3\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.pdb
+D:\Repositories\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.Core.deps.json
+D:\Repositories\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.Core.dll
+D:\Repositories\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.Core.pdb
+D:\Repositories\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.EmailSender.dll
+D:\Repositories\diploma\Diploma\Diploma.Core\bin\Debug\netcoreapp1.0\Diploma.EmailSender.pdb
+D:\Repositories\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.csprojResolveAssemblyReference.cache
+D:\Repositories\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.AssemblyInfo.cs
+D:\Repositories\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.dll
+D:\Repositories\diploma\Diploma\Diploma.Core\obj\Debug\netcoreapp1.0\Diploma.Core.pdb

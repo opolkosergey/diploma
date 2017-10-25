@@ -14,12 +14,20 @@
   <ItemGroup>
     <Compile Remove="Data\**" />
     <Compile Remove="Models\**" />
+    <Compile Remove="Views\Document\**" />
+    <Compile Remove="Views\UserTask\**" />
     <Content Remove="Data\**" />
     <Content Remove="Models\**" />
+    <Content Remove="Views\Document\**" />
+    <Content Remove="Views\UserTask\**" />
     <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Views\Document\**" />
+    <EmbeddedResource Remove="Views\UserTask\**" />
     <None Remove="Data\**" />
     <None Remove="Models\**" />
+    <None Remove="Views\Document\**" />
+    <None Remove="Views\UserTask\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +45,6 @@
     <ProjectReference Include="..\..\Diploma.Core\Diploma.Core.csproj" />
     <ProjectReference Include="..\..\Diploma.DocumentSign\Diploma.DocumentSign.csproj" />
     <ProjectReference Include="..\..\Diploma.EmailSender\Diploma.EmailSender.csproj" />
-    <ProjectReference Include="..\..\Diploma.MyServices\Diploma.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +66,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.0.0">
       <PrivateAssets>All</PrivateAssets>
@@ -84,8 +92,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Admin\" />
-    <Folder Include="Views\Document\" />
-    <Folder Include="Views\UserTask\" />
   </ItemGroup>
 
 </Project>

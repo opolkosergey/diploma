@@ -1,16 +1,20 @@
 using System.Threading.Tasks;
 using Diploma.Core.Models;
 using Diploma.Pagging;
-using Diploma.Services;
-using Diploma.Services.Abstracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Diploma.Core.Services;
 
 namespace Diploma.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IOrganizationsService _organizationsService = new OrganizationService();
+        private readonly OrganizationService _organizationsService;
+
+        public AdminController(OrganizationService organizationsService)
+        {
+            _organizationsService = organizationsService;
+        }
 
         [HttpGet]
         [Authorize(Roles = "Administrator")]
