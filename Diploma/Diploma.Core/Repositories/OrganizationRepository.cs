@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Data;
 using Diploma.Core.Models;
-using Diploma.Core.Repositories.Abstracts;
 using Diploma.Core.Repositories.Abstracts.Base;
 using Microsoft.EntityFrameworkCore;
 

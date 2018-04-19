@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Core.Repositories;
 using Diploma.Core.Repositories.Abstracts.Base;
 
 namespace Diploma.Core.Services
@@ -33,9 +32,9 @@ namespace Diploma.Core.Services
             return _taskRepository.FindBy(userTask => userTask.AssignedTo == userEmail);
         }
 
-        public IEnumerable<UserTask> GetTasksForOrganization(int organizationId)
+        public async Task<IEnumerable<UserTask>> GetTasksForOrganization(int organizationId)
         {
-            var organizationsUsers = _userService.GetAll()
+            var organizationsUsers = (await _userService.GetAll())
                 .Where(u => u.OrganizationId.HasValue && u.OrganizationId == organizationId)
                 .Select(x => x.Email)
                 .ToList();

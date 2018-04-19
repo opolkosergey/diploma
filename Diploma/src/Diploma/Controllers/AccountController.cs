@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -14,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Diploma.Services;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Diploma.Options;
+using Microsoft.Extensions.Options;
 
 namespace Diploma.Controllers
 {
@@ -26,6 +27,7 @@ namespace Diploma.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly UsersOptions _usersOptions;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -33,7 +35,8 @@ namespace Diploma.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory, 
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IOptions<UsersOptions> userOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,6 +44,7 @@ namespace Diploma.Controllers
             _smsSender = smsSender;
             _roleManager = roleManager;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _usersOptions = userOptions.Value;
         }
 
         //
@@ -48,8 +52,7 @@ namespace Diploma.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
-        {
-            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
+        {            
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -60,8 +63,7 @@ namespace Diploma.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
-            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
+        {            
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -98,8 +100,7 @@ namespace Diploma.Controllers
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
+        {            
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -110,8 +111,7 @@ namespace Diploma.Controllers
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["Folders"] = FictitiousDataGenerator.GenerateFolders();
+        {                        
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
@@ -121,14 +121,8 @@ namespace Diploma.Controllers
                     rsaParameters = rsa.ExportParameters(true);
                 }
 
-                var rolesIds = new List<string>();
-                rolesIds.Add((await _roleManager.FindByNameAsync("Employee")).Id);
+                var rolesIds = await CreateUserRoles(model);
 
-                if (model.Email == "opolkosergey@bsuir.com")
-                {
-                    rolesIds.Add((await _roleManager.FindByNameAsync("Administrator")).Id);
-                }
-                
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
@@ -478,6 +472,19 @@ namespace Diploma.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid code.");
                 return View(model);
             }
+        }
+
+        private async Task<List<string>> CreateUserRoles(RegisterViewModel model)
+        {
+            var rolesIds = new List<string>();
+            rolesIds.Add((await _roleManager.FindByNameAsync(UserRole.Employee.ToString())).Id);
+
+            if (_usersOptions.AdminEmails.Contains(model.Email))
+            {
+                rolesIds.Add((await _roleManager.FindByNameAsync(UserRole.Administrator.ToString())).Id);
+            }
+
+            return rolesIds;
         }
 
         #region Helpers

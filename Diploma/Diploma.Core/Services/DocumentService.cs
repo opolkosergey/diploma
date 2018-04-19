@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Core.Repositories;
 using Diploma.Core.Repositories.Abstracts.Base;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Diploma.Core.Services
 {
@@ -16,13 +14,13 @@ namespace Diploma.Core.Services
         private readonly BaseRepository<Document> _documentRepository;
         private readonly BaseRepository<UserFolder> _userFolderRepository;
         private readonly BaseRepository<SignatureWarrant> _signatureWarrantRepository;
-
         private readonly UserManager<ApplicationUser> _userManager;
 
         public DocumentService(
             UserManager<ApplicationUser> userManager, 
             BaseRepository<UserFolder> userFolderRepository, 
-            BaseRepository<Document> documentRepository, BaseRepository<SignatureWarrant> signatureWarrantRepository)
+            BaseRepository<Document> documentRepository, 
+            BaseRepository<SignatureWarrant> signatureWarrantRepository)
         {
             _userManager = userManager;            
             _userFolderRepository = userFolderRepository;
@@ -30,35 +28,26 @@ namespace Diploma.Core.Services
             _signatureWarrantRepository = signatureWarrantRepository;
         }
 
-        public async Task Update(Document document)
-        {
-            await _documentRepository.Update(document);
-        }
+        public async Task Update(Document document) => await _documentRepository.Update(document);        
 
         public async Task AddAccessForUser(ApplicationUser user, int documentId)
         {
             var document = await _documentRepository.Get(documentId.ToString());
 
-            document.DocumentAccesses.Add(new DocumentAccess
+            if (document.DocumentAccesses.SingleOrDefault(x => x.User == user.Email) == null)
             {
-                User = user.Email
-            });
-
-            await Update(document);
+                document.DocumentAccesses.Add(new DocumentAccess { User = user.Email });
+                await Update(document);
+            }
         }
 
-        public async Task CreateSignatureWarrant(SignatureWarrant signatureWarrant)
-        {
-            await _signatureWarrantRepository.Add(signatureWarrant);
-        }
+        public async Task CreateSignatureWarrant(SignatureWarrant signatureWarrant) => await _signatureWarrantRepository.Add(signatureWarrant);
 
-        public async Task UpdateUserAccesses(ApplicationUser user)
+        public async Task UpdateUserDocumentAccesses(ApplicationUser user, bool addDocumentAccessesInCurentOrganization = false)
         {
-            var allDocuments = (await _documentRepository.GetAll()).ToList();
+            var allDocuments = await _documentRepository.GetAll();
 
-            var userDocuments = allDocuments
-                .Where(x => x.DocumentAccesses.Any(a => a.User == user.Email))
-                .ToList();
+            var userDocuments = allDocuments.Where(x => x.DocumentAccesses.Any(a => a.User == user.Email)).ToList();
 
             foreach (var document in userDocuments)
             {
@@ -69,25 +58,32 @@ namespace Diploma.Core.Services
                 await _documentRepository.Update(document);
             }
 
-            var usersFormNewOrganization = _userManager.Users
+            var usersFromNewOrganization = _userManager.Users
                 .Where(x => x.OrganizationId.HasValue && x.OrganizationId == user.OrganizationId)
                 .Select(u => u.Email)
                 .ToList();
 
-            var newDocumentsForUser = allDocuments.Where(x => x.DocumentAccesses.Any(u => usersFormNewOrganization.Contains(u.User)));
-            var documentsIds = newDocumentsForUser.Select(x => x.Id).Distinct();
-
-            foreach (var documentId in documentsIds)
-            {
-                await AddAccessForUser(user, documentId);
-            }
+            var newDocumentsForUser = allDocuments.Where(x => x.DocumentAccesses.Any(u => usersFromNewOrganization.Contains(u.User)));
+            var documentsIds = newDocumentsForUser.Select(x => x.Id).Distinct().ToList();
+            documentsIds.ForEach(async documentId => await AddAccessForUser(user, documentId));
         }
 
         public async Task CreateNewFolder(UserFolder userFolder, ApplicationUser user)
         {
             userFolder.ApplicationUserId = user.Id;
-
             await _userFolderRepository.Add(userFolder);
+        }
+
+        public async Task<UserFolder> GetFolder(int userFolderId, ApplicationUser user)
+        {
+            var userFolder = await _userFolderRepository.Get(userFolderId.ToString());
+
+            if (userFolder != null && userFolder.ApplicationUserId == user.Id)
+            {
+                return userFolder;
+            }
+
+            return null;
         }
 
         public async Task<bool> UpdateDocumentLocation(int documentId, int newFolderId, ApplicationUser user)
@@ -111,31 +107,11 @@ namespace Diploma.Core.Services
                 return false;
             }
 
-            newFolder.DocumentFolders.Add(
-                new DocumentFolder
-                {
-                    DocumentId = documentId
-                }
-            );
+            newFolder.DocumentFolders.Add(new DocumentFolder{ DocumentId = documentId });
 
             await _userFolderRepository.Update(newFolder);
 
             return true;
-        }
-
-        public async Task<FileContentResult> DownloadFile(int id, ApplicationUser user)
-        {
-            var document = await Get(user, id);
-
-            if (document == null)
-            {
-                return null;
-            }
-
-            return new FileContentResult(document.Content, document.ContentType)
-            {
-                FileDownloadName = CreateDocumentNameUsingVersion(document)
-            };
         }
 
         public async Task<Document> Get(ApplicationUser user, int id)
@@ -150,12 +126,71 @@ namespace Diploma.Core.Services
             return null;
         }
 
-        public async Task<IEnumerable<Document>> GetAll()
+        public async Task<IEnumerable<Document>> GetAll() => await _documentRepository.GetAll();
+
+        public string CreateDocumentNameUsingVersion(Document document)
         {
-            return await _documentRepository.GetAll();
+            if (string.IsNullOrEmpty(document.Version))
+            {
+                return document.DocumentName;
+            }
+            else
+            {
+                var index = document.DocumentName.LastIndexOf('.');
+
+                var name = document.DocumentName.Insert(index, $"--{document.Version}");
+
+                return name;
+            }
         }
 
-        public async Task Save(IFormFile file, string folderName, ApplicationUser user)
+        public async Task<Document> Save(IFormFile file, string folderName, ApplicationUser user)
+        {
+            var document = await CreateDocument(file, user);
+
+            using (var reader = new System.IO.BinaryReader(file.OpenReadStream()))
+            {
+                document.Content = reader.ReadBytes((int)file.Length);
+            }
+
+            var folder = CreateFolderIfNotExists(folderName, user);
+
+            folder.DocumentFolders.Add(
+                new DocumentFolder
+                {
+                    Document = document
+                }
+            );
+
+            await _userFolderRepository.Update(folder);
+
+            return document;
+        }
+
+        private async Task<Document> CreateDocument(IFormFile file, ApplicationUser user)
+        {
+            var documentName = ParseFileName(file.FileName);
+
+            var document = new Document
+            {
+                ContentType = file.ContentType,
+                DocumentName = documentName,
+                UploadedDate = DateTime.Now,
+                Version = (await SetDocumentVersion(documentName)).ToString(),
+                Size = file.Length,
+                DocumentAccesses = new List<DocumentAccess>
+                {
+                    new DocumentAccess
+                    {
+                        User = user.Email
+                    }
+                }
+            };
+
+            return document;
+        }
+
+        private static UserFolder CreateFolderIfNotExists(string folderName, ApplicationUser user)
         {
             var folder = user.UserFolders.FirstOrDefault(x => x.Name == folderName);
 
@@ -171,37 +206,7 @@ namespace Diploma.Core.Services
                 user.UserFolders.Add(folder);
             }
 
-            var documentName = ParseFileName(file.FileName);
-
-            var document = new Document
-            {
-                ContentType = file.ContentType,
-                DocumentName = documentName,
-                UploadedDate = DateTime.Now,
-                Version = await SetDocumentVersion(documentName),
-                Size = file.Length,
-                DocumentAccesses = new List<DocumentAccess>
-                {
-                    new DocumentAccess
-                    {
-                        User = user.Email
-                    }
-                }
-            };
-
-            using (var reader = new System.IO.BinaryReader(file.OpenReadStream()))
-            {
-                document.Content = reader.ReadBytes((int)file.Length);
-            }
-
-            folder.DocumentFolders.Add(
-                new DocumentFolder
-                {
-                    Document = document
-                }
-            );
-
-            await _userFolderRepository.Update(folder);
+            return folder;
         }
 
         private string ParseFileName(string fileName)
@@ -220,7 +225,7 @@ namespace Diploma.Core.Services
             return fileName;
         }
 
-        private async Task<string> SetDocumentVersion(string fileFileName)
+        private async Task<int> SetDocumentVersion(string fileFileName)
         {
             var documents = await _documentRepository.GetAll();
 
@@ -230,34 +235,12 @@ namespace Diploma.Core.Services
 
             if (existingDocuments.Any())
             {
-                var versions = existingDocuments.Select(x => int.Parse(x.Version))
-                    .OrderBy(i => i);
-
-                var lastLoadedVersion = versions.Last();
-
-                var version = lastLoadedVersion + 1;
-
-                return version.ToString();
+                var versions = existingDocuments.Select(x => int.Parse(x.Version)).OrderBy(i => i);
+                return versions.Last() + 1;
             }
             else
             {
-                return "1";
-            }
-        }
-
-        private string CreateDocumentNameUsingVersion(Document document)
-        {
-            if (string.IsNullOrEmpty(document.Version))
-            {
-                return document.DocumentName;
-            }
-            else
-            {
-                var index = document.DocumentName.LastIndexOf('.');
-
-                var name = document.DocumentName.Insert(index, $"--{document.Version}");
-
-                return name;
+                return 1;
             }
         }
     }

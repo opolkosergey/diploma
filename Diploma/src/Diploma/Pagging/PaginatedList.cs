@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Diploma.Pagging
 {
@@ -18,20 +17,16 @@ namespace Diploma.Pagging
             AddRange(items);
         }
 
-        private int CalculateTotalPages(int count, int pageSize)
-        {
-            return (int)Math.Ceiling(count / (double)pageSize);
-        }
+        private int CalculateTotalPages(int count, int pageSize) => (int)Math.Ceiling(count / (double)pageSize);      
 
         public bool HasPreviousPage => (PageIndex > 1);
 
         public bool HasNextPage => (PageIndex < TotalPages);
 
-        public static PaginatedList<T> CreateAsync(IEnumerable<T> source, int pageIndex, int pageSize)
+        public static PaginatedList<T> Create(IEnumerable<T> source, int pageIndex, int pageSize)
         {
-            var count = source.Count();
             var items = source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-            return new PaginatedList<T>(items, count, pageIndex, pageSize);
+            return new PaginatedList<T>(items, source.Count(), pageIndex, pageSize);
         }
     }
 }

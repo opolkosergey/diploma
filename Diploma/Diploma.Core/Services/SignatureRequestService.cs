@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Core.Repositories;
 using Diploma.Core.Repositories.Abstracts.Base;
 
 namespace Diploma.Core.Services
@@ -37,7 +35,7 @@ namespace Diploma.Core.Services
             await _signatureRequestRepository.Add(signatureRequest);
         }
 
-        public async Task<IEnumerable<IncomingSignatureRequest>> GetSignatureRequestsForUser(ApplicationUser user)
+        public IEnumerable<IncomingSignatureRequest> GetSignatureRequestsForUser(ApplicationUser user)
         {
             return _signatureRequestRepository.FindBy(x => x.ApplicationUserId == user.Id);
         }

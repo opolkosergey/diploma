@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Data;
+using Diploma.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Diploma.Helpers
 {
     public static class RolesInitializer
     {
-        private static readonly string[] Roles = new string[] { "Administrator", "OrganizationOwner", "OrganizationLead", "Employee" };
+        private static readonly string[] Roles = Enum.GetNames(typeof(UserRole));
 
         public static async Task InitializeRoles(IServiceProvider serviceProvider)
         {

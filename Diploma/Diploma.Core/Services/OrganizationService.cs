@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Core.Repositories;
-using Diploma.Core.Repositories.Abstracts;
 using Diploma.Core.Repositories.Abstracts.Base;
 
 namespace Diploma.Core.Services
@@ -17,19 +15,13 @@ namespace Diploma.Core.Services
             _organizationRepository = organizationRepository;
         }
 
-        public async Task<IEnumerable<Organization>> GetAll()
-        {
-            return await _organizationRepository.GetAll();
-        }
+        public async Task<IEnumerable<Organization>> GetAll() => await _organizationRepository.GetAll();        
 
-        public async Task CreateOrganization(Organization organization)
-        {
-            await _organizationRepository.Add(organization);
-        }
+        public async Task CreateOrganization(Organization organization) => await _organizationRepository.Add(organization);        
 
-        public Organization GetOrganizationByName(string name)
+        public Organization GetOrganization(string organizationName)
         {
-            return _organizationRepository.FindBy(org => org.Name == name).Single();
+            return _organizationRepository.FindBy(org => org.Name == organizationName).Single();
         }
     }
 }

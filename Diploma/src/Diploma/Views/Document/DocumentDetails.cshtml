@@ -1,0 +1,41 @@
+@model Diploma.Core.Models.Document
+
+<div class="col-md-9">
+    <h4>Document</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DocumentName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => Math.Ceiling(model.Size / 1024)) Kbytes
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UploadedDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UploadedDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Version)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Version)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SignedByUser)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SignedByUser)
+        </dd>        
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

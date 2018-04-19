@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Diploma.Core.Models;
-using Diploma.Core.Repositories;
 using Binbin.Linq;
 using Diploma.Core.Repositories.Abstracts.Base;
 using Microsoft.AspNetCore.Identity;
@@ -14,16 +12,16 @@ namespace Diploma.Core.Services
     public class SearchService
     {
         private readonly BaseRepository<Document> _documentRepository;
-
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public SearchService(UserManager<ApplicationUser> userManager, BaseRepository<Document> documentRepository)
+        public SearchService(UserManager<ApplicationUser> userManager,
+            BaseRepository<Document> documentRepository)
         {
             _userManager = userManager;
             _documentRepository = documentRepository;
         }
 
-        public async Task<IEnumerable<Document>> SearchDocuments(string searchString)
+        public IEnumerable<Document> SearchDocuments(string searchString)
         {
             var queryParts = searchString.ToLower().Split(new[] { " and " }, StringSplitOptions.None).Select(x => x.Trim());
             var expressions = new List<Expression<Func<Document, bool>>>();
@@ -46,14 +44,13 @@ namespace Diploma.Core.Services
             return _documentRepository.FindBy(predicate);
         }
 
-        public async Task<IEnumerable<ApplicationUser>> SearchUsers(string s, int? organizationId)
+        public IEnumerable<ApplicationUser> SearchUsers(string s, int? organizationId = null)
         {
             if (organizationId.HasValue)
             {
-                var users = _userManager.Users.Where(x => x.Email.Contains(s)
+                return _userManager.Users.Where(x => x.Email.Contains(s)
                                                      && x.OrganizationId.HasValue &&
-                                                     x.OrganizationId.Value == organizationId.Value);
-                return users;
+                                                     x.OrganizationId.Value == organizationId.Value);                
             }
 
             return _userManager.Users.Where(x => x.Email.Contains(s));                        

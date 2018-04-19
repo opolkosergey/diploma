@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Diploma.Core.Models;
 using Microsoft.AspNetCore.Identity;
@@ -19,33 +20,34 @@ namespace Diploma.Core.Services
             _roleManager = roleManager;
         }
 
-        public ApplicationUser GetUserByEmail(string email)
+        public async Task<ApplicationUser> GetUser(ClaimsPrincipal claimsPrincipal) => await _userManager.GetUserAsync(claimsPrincipal);        
+
+        public async Task<ApplicationUser> GetUserByEmail(string email)
         {
-            var user = _userManager.Users
+            return await _userManager.Users
                 .Include(i => i.Organization)
                 .Include(i => i.Roles)                
                 .Include(i => i.UserFolders)
                 .ThenInclude(x => x.DocumentFolders)
                 .Include(i => i.UserKeys)
-                .FirstOrDefault(x => x.Email == email);
-
-            return user;
+                .FirstOrDefaultAsync(x => x.Email == email);            
         }
 
-        public IEnumerable<ApplicationUser> GetAll()
+        public async Task<IEnumerable<ApplicationUser>> GetAll()
         {
-            return _userManager.Users
+            return await _userManager.Users
                 .Include(i => i.Organization)
                 .Include(i => i.Roles)
-                .Include(i => i.UserFolders)
-                //.ThenInclude(x => x.Documents)
+                .Include(i => i.UserFolders)                
                 .Include(i => i.UserKeys)
-                .ToList();
+                .ToListAsync();
         }
+
+        public IQueryable<IdentityRole> GetRoles() =>_roleManager.Roles;       
 
         public async Task UpdateUserByAdmin(string email, string role, Organization organization)
         {
-            var user = GetUserByEmail(email);
+            var user = await GetUserByEmail(email);
 
             var newRole = _roleManager.Roles.Single(x => x.Name == role);
 
@@ -58,8 +60,7 @@ namespace Diploma.Core.Services
                 });
             }            
            
-            user.OrganizationId = organization.Id;
-            //user.Organization = organization;            
+            user.OrganizationId = organization.Id;             
 
             await _userManager.UpdateAsync(user);
         }

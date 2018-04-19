@@ -1,4 +1,4 @@
-﻿@using Diploma.Core.Models
+﻿@using Diploma.ViewModels;
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,10 +8,10 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css"/>
+        <link rel="stylesheet" href="~/css/site.css" />
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css"
-              rel="Stylesheet" type="text/css"/>
+              rel="Stylesheet" type="text/css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -31,31 +31,17 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @*@if (!User.IsInRole("Employee"))
-                    {*@
-                        <a class="navbar-brand" href="@Url.Action("Index", "Home")">HOME</a>
-                    @*}*@
-                    
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">HOME</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        @*<li><a href="@Url.Action("CreateBlog", "Blog")">Create blog</a></li>*@
                         @if (User.IsInRole("Administrator"))
                         {
-                            <li><a href="@Url.Action("Users", "Home", new {forEdit = true})">Manage users</a></li>
-                        }
-                        @if (User.IsInRole("Administrator"))
-                        {
+                            <li><a href="@Url.Action("Users", "Admin", new {forEdit = true})">Manage users</a></li>                        
                             <li><a href="@Url.Action("CreateOrganization", "Admin" )">Create new organization</a></li>
                             <li><a href="@Url.Action("OrganizationsList", "Admin" )">Organizations list</a></li>
                         }
                     </ul>
-                    @*<form class="navbar-form navbar-left" action="/Search/ByTag" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="tag" placeholder="enter tag here">
-                        </div>
-                        <button type="submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-search" style="float: right"></span></button>
-                    </form>*@
                     <ul class="nav navbar-nav navbar-right">
                         <div class="navbar-collapse collapse">
                             @Html.Partial("_LoginPartial")
@@ -72,36 +58,34 @@
                             <li><a href="@Url.Action("Index", "Home")"><i class="glyphicon glyphicon-home"></i> Home</a></li>
                             <li><a href="@Url.Action("CreateUserTask", "Home")"><i class="glyphicon glyphicon-pencil"></i> Create user task</a></li>
                             <li><a href="@Url.Action("TasksList", "Home")"><i class="glyphicon glyphicon-list"></i> Tasks</a></li>
-                            <li><a href="@Url.Action("MyTasks", "Home")"><i class="glyphicon glyphicon-user glyphicon-list"></i> My tasks</a></li>                            
+                            <li><a href="@Url.Action("MyTasks", "Home")"><i class="glyphicon glyphicon-user glyphicon-list"></i> My tasks</a></li>
                         </ul>
                     </div>
                 </div>
 
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            Folders
-                            @if (!User.IsInRole("Administrator"))
-                            {
-                                <ul class="nav nav-list">
-                                    @foreach (var folder in @ViewData["Folders"] as IEnumerable<UserFolder>)
-                                    {
-                                        <li><a href=""><i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.DocumentFolders.Count</span></a></li>
-                                    }
-                                </ul>
-                            }
-                            
-                        </div>
-                    </div>
-                
-                
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <ul class="nav nav-list">                            
+                        Folders
+                            <ul class="nav nav-list">
+                                @foreach (var folder in @ViewData["Folders"] as IEnumerable<LayoutUserFoldersModel>)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", "Home", new { folderId = folder.Id })">
+                                        <i class="fa fa-folder-o" aria-hidden="true"></i> @folder.Name <span style="float: right" class="badge">@folder.DocumentsCount</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <ul class="nav nav-list">
                             <li><a href="@Url.Action("GetSignatureRequests", "Home")"><i class="fa fa-pencil" aria-hidden="true"></i> <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Incoming signature requests</a></li>
                             <li><a href=@Url.Action("CreateSignatureWarrant", "Home")><i class="fa fa-pencil" aria-hidden="true"></i> <i class="fa fa-long-arrow-right" aria-hidden="true"></i> <i class="fa fa-user" aria-hidden="true"></i> Create signature varrant</a></li>
                         </ul>
                     </div>
-                </div>                
+                </div>
             </div>
             <div class="body-content" id="Content">
                 @RenderBody()
@@ -109,98 +93,28 @@
         </div>
         <hr />
         <footer>
-            @*<p>&copy; @DateTime.Now.Year - Final blog project by Opolko for</p>*@
+            @*<p>&copy; @DateTime.Now.Year -</p>*@
         </footer>
-    </div>    
+    </div>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-<script src="~/js/docload.js"></script>
-<script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-    
-    
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="~/js/docload.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>   
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(function () {
-            $('#datetimepicker6').datetimepicker();           
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(function () {
-        $("#allusers").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '/Document/UserSearch/',
-                    data: JSON.stringify({username: request.term}),
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return item;
-                        }))
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            },
-            select: function (e, i) {
-                $("#hfCustomer").val(i.item.val);
-            },
-            minLength: 1
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    $(function () {
-        $("#organizationusers").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '/Document/UserSearch/',
-                    data: JSON.stringify({ username: request.term, onlyInOrganization: true }),
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return item;
-                        }))
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            },
-            select: function (e, i) {
-                $("#hfCustomer").val(i.item.val);
-            },
-            minLength: 1
-        });
-    });
-</script>    
-
-@RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>

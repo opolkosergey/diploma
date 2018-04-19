@@ -7,43 +7,29 @@
     <OutputType>Exe</OutputType>
     <PackageId>Diploma</PackageId>
     <UserSecretsId>aspnet-Diploma-c78bd18c-cb2e-4a11-b557-5b00ebc5bc91</UserSecretsId>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>1.0.5</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;dnxcore50;portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Data\**" />
-    <Compile Remove="Models\**" />
-    <Compile Remove="Views\Document\**" />
     <Compile Remove="Views\UserTask\**" />
     <Content Remove="Data\**" />
-    <Content Remove="Models\**" />
-    <Content Remove="Views\Document\**" />
     <Content Remove="Views\UserTask\**" />
     <EmbeddedResource Remove="Data\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <EmbeddedResource Remove="Views\Document\**" />
     <EmbeddedResource Remove="Views\UserTask\**" />
     <None Remove="Data\**" />
-    <None Remove="Models\**" />
-    <None Remove="Views\Document\**" />
     <None Remove="Views\UserTask\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\css\bootstrap-datetimepicker.min.css" />
-    <Content Include="wwwroot\js\bootstrap-datetimepicker.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="wwwroot\**\*;Views\**\*">
+    <None Update="Views\**\*">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Diploma.Core\Diploma.Core.csproj" />
-    <ProjectReference Include="..\..\Diploma.DocumentSign\Diploma.DocumentSign.csproj" />
     <ProjectReference Include="..\..\Diploma.EmailSender\Diploma.EmailSender.csproj" />
   </ItemGroup>
 
@@ -91,7 +77,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Admin\" />
+    <None Include="wwwroot\images\banner1.svg" />
+    <None Include="wwwroot\images\banner2.svg" />
+    <None Include="wwwroot\images\banner3.svg" />
+    <None Include="wwwroot\images\banner4.svg" />
+    <None Include="wwwroot\js\bootstrap-datetimepicker.min.js" />
+    <None Include="wwwroot\js\docload.js" />
+    <None Include="wwwroot\js\site.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-theme.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\lib\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\npm.js" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\_references.js" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using Diploma.EmailSender.Abstracts;
 using Diploma.EmailSender.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 
 namespace Diploma.Filters
 {
@@ -20,22 +21,29 @@ namespace Diploma.Filters
             _logger = logger;
         }
 
-        public async void OnException(ExceptionContext context)
+        public void OnException(ExceptionContext context)
         {
-            await _logger.Log(new AuditEntry
+            _logger.Log(new AuditEntry
             {
                 DateTime = DateTime.Now,
                 LogLevel = LogLevel.Error,
                 Details = context.Exception.ToString()
             });
 
-            await _emailNotificator.SendErrorReportToAdmin(new ReportModel
+            _emailNotificator.SendErrorReportToAdmin(new ReportModel
             {
                 Subject = "System response exception.",
                 Body = context.Exception.ToString()
             });
 
-            //context.Result = new RedirectToActionResult("Error", "Home", null, true);
+            context.Result = new RedirectToRouteResult(
+                new RouteValueDictionary
+                {
+                    { "controller", "Home" },
+                    { "action", "Error" }
+                });
+            
+            context.Result.ExecuteResultAsync(context);
         }
     }
 }

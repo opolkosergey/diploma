@@ -3,7 +3,6 @@
     public enum TaskStatus
     {
         InProgress,
-
         Done
     }
 }

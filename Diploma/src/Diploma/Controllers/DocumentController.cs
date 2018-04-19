@@ -1,124 +1,164 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Diploma.Core.Models;
-using Diploma.Core.Services;
-using Diploma.DocumentSign;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Diploma.Core.Models;
+using Diploma.Core.Services;
+using Diploma.Options;
+using Diploma.ViewModels;
 
 namespace Diploma.Controllers
 {
+    [Authorize]
     public class DocumentController : Controller
     {
         private readonly DocumentService _documentService;
-        private readonly DocumentSignService _documentSignService;
         private readonly SearchService _searchService;
         private readonly UserService _userService;
 
         public DocumentController(
-            UserManager<ApplicationUser> userManager, 
-            RoleManager<IdentityRole> roleManager, 
-            DocumentSignService documentSignService, 
-            SearchService searchService, 
+            SearchService searchService,
             UserService userService, 
             DocumentService documentService)
         {
-            _documentSignService = documentSignService;
             _searchService = searchService;
             _userService = userService;
             _documentService = documentService;
         }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Upload(IFormFileCollection filesCollection, string folderName = "Uploaded")
+        [HttpPost]        
+        public async Task<IActionResult> Upload(
+            [FromServices] IOptions<UsersOptions> options, 
+            IFormFileCollection filesCollection, 
+            string folderName = "Uploaded")
         {         
             var file = filesCollection.FirstOrDefault();
-
             if (file == null)
             {
-                return View("Error", "There are no file to save. Please select file and try again.");
+                return RedirectToAction(nameof(HomeController.Error), "Home", new { messsage = "There is no file to save. Please select file and try again." });
             }
 
-            if (file.ContentType == "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
-                || file.ContentType == "application/msword")
+            if (options.Value.SupportedDocumentTypes.Contains(file.ContentType))
             {
-                var user = _userService.GetUserByEmail(User.Identity.Name);
-
-                await _documentService.Save(file, folderName, user);
-
-                return RedirectToAction("Index", "Home");                
+                var user = await _userService.GetUserByEmail(User.Identity.Name);
+                var document = await _documentService.Save(file, folderName, user);
+                return RedirectToAction(nameof(HomeController.Index), "Home", new { folderId = document.DocumentFolders.First().UserFolderId });                
             }
 
-            return View("Error", "Invalid content type.");
+            return RedirectToAction(nameof(HomeController.Error), "Home", new { messsage = "Document has unsupported content type." });
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> DownloadFile(int id)
         {
-            var user = _userService.GetUserByEmail(User.Identity.Name);
+            var user = await _userService.GetUserByEmail(User.Identity.Name);
 
-            var result = await _documentService.DownloadFile(id, user);
+            var result = await _documentService.Get(user, id);
 
             if (result == null)
             {
-                return new NotFoundResult();
+                return NotFound($"Document with id '{id}' was not found.");
             }
 
-            return result;
+            return File(result.Content, result.ContentType);
         }        
 
         [HttpPost]
         public async Task<JsonResult> UserSearch([FromBody]SearchRequestModel model)
         {
-            var users = new List<ApplicationUser>();
+            IEnumerable<ApplicationUser> users;
 
-            if (model.OnlyInOrganization)
+            if (model.MakeSearchOnlyInOrganization)
             {
-                var user = _userService.GetUserByEmail(User.Identity.Name);
-
-                users = (await _searchService.SearchUsers(model.Username, user.OrganizationId)).ToList();
+                var user = await _userService.GetUserByEmail(User.Identity.Name);
+                users = _searchService.SearchUsers(model.Username, user.OrganizationId);
             }
             else
             {
-                users = (await _searchService.SearchUsers(model.Username, null)).ToList();
+                users = _searchService.SearchUsers(model.Username);
             }
 
-            return Json(users.Select(x => new { label = x.Email }));
+            return Json(users.Select(x => x.Email));
         }
 
-        [Authorize]
-        public async Task<IActionResult> SignDocument(int id)
+        [HttpGet]
+        public async Task<IActionResult> SignDocument([FromServices] DocumentSignService documentSignService, int id)
         {
-            var user = _userService.GetUserByEmail(User.Identity.Name);
-
+            var user = await _userService.GetUserByEmail(User.Identity.Name);
             var document = await _documentService.Get(user, id);
 
             if (document == null)
             {
-                return new NotFoundResult();
+                return NotFound($"Document with id '{id}' was not found.");
             }
 
-            if (await _documentSignService.SignDocument(document, user))
+            if (await documentSignService.SignDocument(document, user))
             {
                 await _documentService.Update(document);
-                return RedirectToAction("GetSignatureRequests", "Home");
+                return RedirectToAction(nameof(HomeController.GetSignatureRequests), "Home");
             }
 
-            return RedirectToAction("Error", "Home");
+            return RedirectToAction(nameof(HomeController.Error), "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DocumentDetails(int id)
+        {
+            var user = await _userService.GetUser(User);
+            var document = await _documentService.Get(user, id);
+
+            return View(document);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DocumentManage(int id)
+        {
+            var user = await _userService.GetUser(User);
+            var document = await _documentService.Get(user, id);
+
+            return View(new DocumentManageModel
+            {
+                Id = document.Id,
+                DocumentName = document.DocumentName,
+                Version = document.Version,
+                UsersWithAccess = document.DocumentAccesses.Select(x => x.User).Distinct()
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DocumentManage(
+            [FromServices] SignatureRequestService signatureRequestService, 
+            DocumentManageModel documentModel)
+        {
+            var user = await _userService.GetUserByEmail(documentModel.NewAccessForUser);
+
+            if (user == null)
+            {
+                return RedirectToAction(nameof(HomeController.Error), "Home", new { message = $"User with email '{documentModel.NewAccessForUser}' is not found." });
+            }
+
+            await _documentService.AddAccessForUser(user, documentModel.Id);
+
+            if (documentModel.RequestSignature)
+            {
+                await signatureRequestService.CreateSignatureRequest(new IncomingSignatureRequest
+                {
+                    DocumentId = documentModel.Id,
+                    UserRequester = User.Identity.Name,
+                    ApplicationUserId = user.Id
+                });
+            }
+
+            return RedirectToAction(nameof(DocumentManage), documentModel.Id);
         }
 
         public class SearchRequestModel
         {
             public string Username { get; set; }
-
-            public bool OnlyInOrganization { get; set; }
+            public bool MakeSearchOnlyInOrganization { get; set; }
         }
     }
 }

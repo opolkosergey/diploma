@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Diploma.Core.Data;
 using Diploma.Core.Models;
 using Diploma.Core.Repositories.Abstracts.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Core.Repositories
 {
@@ -16,7 +16,11 @@ namespace Diploma.Core.Repositories
 
         public override async Task<UserFolder> Get(string id)
         {
-            throw new NotImplementedException();
+            return await ctx.UserFolders
+                .Include(x => x.ApplicationUser)
+                .Include(x => x.DocumentFolders)
+                .ThenInclude(x => x.Document)
+                .FirstOrDefaultAsync(x => x.Id == int.Parse(id));
         }
 
         public override async Task<IEnumerable<UserFolder>> GetAll()

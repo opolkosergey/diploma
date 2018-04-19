@@ -3,7 +3,6 @@ using Diploma.Core.Models;
 using Diploma.Core.Repositories;
 using Diploma.Core.Repositories.Abstracts.Base;
 using Diploma.Core.Services;
-using Diploma.DocumentSign;
 using Diploma.EmailSender;
 using Diploma.EmailSender.Abstracts;
 using Diploma.EmailSender.Models;
@@ -17,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Diploma.Services;
+using Diploma.Options;
 
 namespace Diploma
 {
@@ -28,7 +28,8 @@ namespace Diploma
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile("Configurations/EmailNotificatorConfiguration.json", optional: false, reloadOnChange: true);
+                .AddJsonFile("Configurations/EmailNotificatorConfiguration.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("Configurations/UsersConfiguration.json", optional: false, reloadOnChange: true);
 
             if (env.IsDevelopment())
             {
@@ -56,10 +57,13 @@ namespace Diploma
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(GlobalExceptionInterseptor));
+                options.Filters.Add(new UserFoldersResultFilter()); 
+                options.Filters.Add(new ResourceNotFoundFilter());
             });
 
             services.AddOptions();
             services.Configure<EmailSenderOptions>(Configuration.GetSection("NotificatorConfiguration"));
+            services.Configure<UsersOptions>(Configuration.GetSection("UsersConfiguration"));
 
             services.AddTransient<IEmailNotificator, EmailNotificator>();
             services.AddTransient<AuditLogger>();
@@ -104,7 +108,7 @@ namespace Diploma
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();

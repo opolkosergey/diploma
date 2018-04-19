@@ -1,5 +1,5 @@
-﻿@using Diploma.Core.Models
-@model Diploma.Pagging.PaginatedList<Document>
+﻿@using Diploma.Models
+@model FolderViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -30,7 +30,12 @@
                 </p>
             </div>
         </form>
-
+        @if (!string.IsNullOrEmpty(Model.FolderName))
+        {
+            <div class="panel-body">
+                <b>@Model.FolderName</b> Folder
+            </div>
+        }
         <table class="table">
             <thead>
                 <tr>
@@ -51,7 +56,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Documents)
                 {
                     <tr>
                         <td>
@@ -68,11 +73,11 @@
                         </td>
                         <td></td>
                         <td>
-                            <a asp-action="DocumentManage" asp-controller="Home" asp-route-id="@item.Id">Manage</a> |
-                            <a asp-action="DocumentDetails" asp-controller="Home" asp-route-id="@item.Id">Details</a>                            
+                            <a asp-action="DocumentManage" asp-controller="Document" asp-route-id="@item.Id">Manage</a> |
+                            <a asp-action="DocumentDetails" asp-controller="Document" asp-route-id="@item.Id">Details</a>
                         </td>
                         <td style="text-align: center">
-                            <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="@item.Id"><i class="fa fa-download"></i></a>
+                            <a asp-action="DownloadFile" asp-controller="Document" asp-route-id="@item.Id" target="_blank"><i class="fa fa-download"></i></a>
                         </td>
                         <td>
                             @if (!string.IsNullOrEmpty(item.Signature))
@@ -85,26 +90,27 @@
             </tbody>
         </table>
 
-        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-        var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-
+        var prevDisabled = !Model.Documents.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Documents.HasNextPage ? "disabled" : "";
 
         <a asp-action="Index"
            asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-page="@(Model.PageIndex - 1)"
+           asp-route-page="@(Model.Documents.PageIndex - 1)"
            asp-route-currentFilter="@ViewData["CurrentFilter"]"
            asp-route-loginAsAnonimous="@ViewData["anonimous"]"
+           asp-route-folderId="@ViewData["FolderId"]"
            class="btn btn-default @prevDisabled btn">
             Previous
         </a>
-            <a asp-action="Index"
-               asp-route-sortOrder="@ViewData["CurrentSort"]"
-               asp-route-page="@(Model.PageIndex + 1)"
-               asp-route-currentFilter="@ViewData["CurrentFilter"]"
-               asp-route-loginAsAnonimous="@ViewData["anonimous"]"
-               class="btn btn-default @nextDisabled btn">
-                Next
-            </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-page="@(Model.Documents.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           asp-route-loginAsAnonimous="@ViewData["anonimous"]"
+           asp-route-folderId="@ViewData["FolderId"]"
+           class="btn btn-default @nextDisabled btn">
+            Next
+        </a>
     }
     else
     {
@@ -116,103 +122,5 @@
                 <a class="btn btn-lg btn-warning" href="@Url.Action("Index","Home", new { loginAsAnonimous = true })" role="button">Login as anonimous user</a>
             </p>
         </div>
-        @*<div class="row marketing">
-            <div class="col-lg-6">
-                <h4>Or</h4>
-                <p>Place your articles for certain categories</p>
-                <h4>Photos</h4>
-                <p>Attach photo to articles</p>
-            </div>
-            <div class="col-lg-6">
-                <h4>Comment</h4>
-                <p>Discuss your articles and articles of other users</p>
-                <h4>Search</h4>
-                <p>Look for interesting article</p>
-            </div>
-        </div>*@
     }
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*@{
-        ViewData["Title"] = "Home Page";
-    }
-
-    <div class="col-lg-9">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <h2 style="text-align: center">Your documents</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LastName)</a>
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FirstMidName)
-                        </th>
-                        <th>
-                            <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">@Html.DisplayNameFor(model => model.EnrollmentDate)</a>
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FirstMidName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EnrollmentDate)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <div class="jumbotron">
-                <h1>Welcome</h1>
-                <p class="lead">Share news and learn about new events in the world</p>
-                <p>
-                    <a class="btn btn-lg btn-default" href="@Url.Action("Register","Account")" role="button">Sign up today</a>
-                </p>
-            </div>
-            <div class="row marketing">
-                <div class="col-lg-6">
-                    <h4>Articles</h4>
-                    <p>Place your articles for certain categories</p>
-                    <h4>Photos</h4>
-                    <p>Attach photo to articles</p>
-                </div>
-                <div class="col-lg-6">
-                    <h4>Comment</h4>
-                    <p>Discuss your articles and articles of other users</p>
-                    <h4>Search</h4>
-                    <p>Look for interesting article</p>
-                </div>
-            </div>
-        }
-    </div>*@

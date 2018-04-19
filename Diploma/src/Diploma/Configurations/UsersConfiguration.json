@@ -1,0 +1,13 @@
+﻿{
+  "UsersConfiguration": {
+    "AdminEmails": [
+      "opolkosergey@bsuir.com"
+    ],
+    "SupportedDocumentTypes": [
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
+      "application/pdf"
+    ],
+    "DocumentsCountOnPage": 4
+  }
+}
